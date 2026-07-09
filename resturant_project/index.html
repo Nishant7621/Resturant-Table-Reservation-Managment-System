@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Reservation System</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <header>
+        <nav class="navbar">
+
+            <div class="logo">
+                <i class="fa-solid fa-utensils"></i>
+                TableReserve
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Restaurants</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+
+            <div class="nav-buttons">
+                <button class="login-btn">Login</button>
+                <button class="register-btn">Register</button>
+            </div>
+
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <h1>Reserve Your Perfect Table</h1>
+
+            <p>
+                Discover amazing restaurants and book your favorite table in just a few clicks.
+            </p>
+
+            <button class="hero-btn">
+                Book Now
+            </button>
+
+        </div>
+
+    </section>
+
+<!-- Search Reservation Section -->
+
+<section class="search-section">
+
+    <h2>Find Your Perfect Table</h2>
+    <p>Search restaurants by date, time, guests, and location.</p>
+
+    <div class="search-box">
+
+        <div class="input-group">
+            <label>Date</label>
+            <input type="date">
+        </div>
+
+        <div class="input-group">
+            <label>Time</label>
+            <input type="time">
+        </div>
+
+        <div class="input-group">
+            <label>Guests</label>
+            <select>
+                <option>1 Guest</option>
+                <option>2 Guests</option>
+                <option>3 Guests</option>
+                <option>4 Guests</option>
+                <option>5 Guests</option>
+                <option>6+ Guests</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label>Location</label>
+            <input type="text" placeholder="Enter City">
+        </div>
+
+        <button class="search-btn">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            Search
+        </button>
+
+    </div>
+
+    </section>
+    
+<!-- Featured Restaurants -->
+
+<section class="restaurants">
+
+    <div class="section-title">
+        <h2>Featured Restaurants</h2>
+        <p>Discover the best restaurants near you.</p>
+    </div>
+
+    <div class="restaurant-grid">
+
+        <!-- Card 1 -->
+
+        <div class="restaurant-card">
+
+            <img src="images/restaurant1.jpg" alt="Bella Italia">
+
+            <div class="card-content">
+
+                <h3>Bella Italia</h3>
+
+                <div class="info">
+                    <span>⭐ 4.8</span>
+                    <span>Italian</span>
+                </div>
+
+                <p>📍 Delhi</p>
+
+                <button>Reserve Table</button>
+
+            </div>
+
+        </div>
+
+        <!-- Card 2 -->
+
+        <div class="restaurant-card">
+
+            <img src="images/restaurant2.jpg" alt="Burger Hub">
+
+            <div class="card-content">
+
+                <h3>Burger Hub</h3>
+
+                <div class="info">
+                    <span>⭐ 4.6</span>
+                    <span>Fast Food</span>
+                </div>
+
+                <p>📍 Mumbai</p>
+
+                <button>Reserve Table</button>
+
+            </div>
+
+        </div>
+
+        <!-- Card 3 -->
+
+        <div class="restaurant-card">
+
+            <img src="images/restaurant3.jpg" alt="Sushi World">
+
+            <div class="card-content">
+
+                <h3>Sushi World</h3>
+
+                <div class="info">
+                    <span>⭐ 4.9</span>
+                    <span>Japanese</span>
+                </div>
+
+                <p>📍 Bangalore</p>
+
+                <button>Reserve Table</button>
+
+            </div>
+
+        </div>
+
+        <!-- Card 4 -->
+
+        <div class="restaurant-card">
+
+            <img src="images/restaurant4.jpg" alt="Taco House">
+
+            <div class="card-content">
+
+                <h3>Taco House</h3>
+
+                <div class="info">
+                    <span>⭐ 4.5</span>
+                    <span>Mexican</span>
+                </div>
+
+                <p>📍 Pune</p>
+
+                <button>Reserve Table</button>
+
+            </div>
+
+        </div>
+
+        <!-- Card 5 -->
+
+        <div class="restaurant-card">
+
+            <img src="images/restaurant5.jpg" alt="Spice Villa">
+
+            <div class="card-content">
+
+                <h3>Spice Villa</h3>
+
+                <div class="info">
+                    <span>⭐ 4.7</span>
+                    <span>Indian</span>
+                </div>
+
+                <p>📍 Hyderabad</p>
+
+                <button>Reserve Table</button>
+
+            </div>
+
+        </div>
+
+        <!-- Card 6 -->
+
+        <div class="restaurant-card">
+
+            <img src="images/restaurant6.jpg" alt="BBQ Nation">
+
+            <div class="card-content">
+
+                <h3>BBQ Nation</h3>
+
+                <div class="info">
+                    <span>⭐ 4.8</span>
+                    <span>Barbecue</span>
+                </div>
+
+                <p>📍 Chennai</p>
+
+                <button>Reserve Table</button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    </section>
+<!-- ===========================
+
+=========================== -->
+
+    <section class="why-choose-us">
+
+    <div class="section-title">
+        <h2>Why Choose Us</h2>
+        <p>Experience hassle-free restaurant reservations with our platform.</p>
+    </div>
+
+    <div class="features-container">
+
+        <!-- Feature 1 -->
+
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fa-solid fa-utensils"></i>
+            </div>
+
+            <h3>Easy Booking</h3>
+
+            <p>
+                Reserve your favorite table in just a few clicks without any hassle.
+            </p>
+        </div>
+
+        <!-- Feature 2 -->
+
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fa-solid fa-bolt"></i>
+            </div>
+
+            <h3>Instant Confirmation</h3>
+
+            <p>
+                Get immediate booking confirmation with real-time table availability.
+            </p>
+        </div>
+
+        <!-- Feature 3 -->
+
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+
+            <h3>Secure Reservation</h3>
+
+            <p>
+                Your reservation details are protected with secure booking management.
+            </p>
+        </div>
+
+        <!-- Feature 4 -->
+
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fa-solid fa-headset"></i>
+            </div>
+
+            <h3>24/7 Support</h3>
+
+            <p>
+                Our support team is available anytime to help with your reservations.
+            </p>
+        </div>
+
+    </div>
+
+    </section>
+    <!-- ===========================
+     How It Works
+=========================== -->
+
+<section class="how-it-works">
+
+    <div class="section-title">
+        <h2>How It Works</h2>
+        <p>Book your favorite restaurant in three simple steps.</p>
+    </div>
+
+    <div class="steps-container">
+
+        <!-- Step 1 -->
+
+        <div class="step-card">
+
+            <div class="step-icon">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+
+            <h3>Search</h3>
+
+            <p>
+                Find restaurants by location, cuisine, date, and time.
+            </p>
+
+        </div>
+
+        <div class="step-arrow">
+            <i class="fa-solid fa-arrow-right"></i>
+        </div>
+
+        <!-- Step 2 -->
+
+        <div class="step-card">
+
+            <div class="step-icon">
+                <i class="fa-solid fa-calendar-check"></i>
+            </div>
+
+            <h3>Reserve</h3>
+
+            <p>
+                Choose your preferred table and confirm your reservation instantly.
+            </p>
+
+        </div>
+
+        <div class="step-arrow">
+            <i class="fa-solid fa-arrow-right"></i>
+        </div>
+
+        <!-- Step 3 -->
+
+        <div class="step-card">
+
+            <div class="step-icon">
+                <i class="fa-solid fa-utensils"></i>
+            </div>
+
+            <h3>Enjoy</h3>
+
+            <p>
+                Arrive at the restaurant and enjoy your dining experience.
+            </p>
+
+        </div>
+
+    </div>
+
+    </section>
+<!-- ===========================
+     Testimonials
+=========================== -->
+
+<!-- ===========================
+     Customer Reviews
+=========================== -->
+
+<section class="reviews">
+
+    <div class="section-title">
+        <h2>What Our Customers Say</h2>
+        <p>Real experiences shared by our happy diners.</p>
+    </div>
+
+    <div class="review-container">
+
+        <!-- Review 1 -->
+
+        <div class="review-card">
+
+            <div class="review-header">
+
+                <img src="images/user1.jpg" alt="Rahul Sharma">
+
+                <div>
+
+                    <h3>Rahul Sharma</h3>
+
+                    <span class="verified">
+                        <i class="fa-solid fa-circle-check"></i>
+                        Verified Customer
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="stars">
+                ★★★★★
+            </div>
+
+            <p>
+                Booking a table was quick and effortless. The restaurant was exactly as shown, and the service exceeded my expectations. Highly recommended!
+            </p>
+
+            <div class="review-footer">
+
+                <span>
+                    <i class="fa-solid fa-utensils"></i>
+                    Bella Italia
+                </span>
+
+                <span>
+                    <i class="fa-solid fa-calendar"></i>
+                    12 Jun 2026
+                </span>
+
+            </div>
+
+        </div>
+
+        <!-- Review 2 -->
+
+        <div class="review-card">
+
+            <div class="review-header">
+
+                <img src="images/user2.jpg" alt="Priya Verma">
+
+                <div>
+
+                    <h3>Priya Verma</h3>
+
+                    <span class="verified">
+                        <i class="fa-solid fa-circle-check"></i>
+                        Verified Customer
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="stars">
+                ★★★★★
+            </div>
+
+            <p>
+                I booked a table for my parents' anniversary. Everything was perfectly arranged and the reservation process was seamless.
+            </p>
+
+            <div class="review-footer">
+
+                <span>
+                    <i class="fa-solid fa-utensils"></i>
+                    Spice Villa
+                </span>
+
+                <span>
+                    <i class="fa-solid fa-calendar"></i>
+                    18 Jun 2026
+                </span>
+
+            </div>
+
+        </div>
+
+        <!-- Review 3 -->
+
+        <div class="review-card">
+
+            <div class="review-header">
+
+                <img src="images/user3.jpg" alt="Aman Gupta">
+
+                <div>
+
+                    <h3>Aman Gupta</h3>
+
+                    <span class="verified">
+                        <i class="fa-solid fa-circle-check"></i>
+                        Verified Customer
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="stars">
+                ★★★★☆
+
+            </div>
+
+            <p>
+                Great platform with plenty of restaurant choices. Instant confirmation and a clean interface made booking very convenient.
+            </p>
+
+            <div class="review-footer">
+
+                <span>
+                    <i class="fa-solid fa-utensils"></i>
+                    Sushi World
+                </span>
+
+                <span>
+                    <i class="fa-solid fa-calendar"></i>
+                    22 Jun 2026
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- ===========================
+     Write a Review
+=========================== -->
+
+<section class="write-review">
+
+    <div class="section-title">
+        <h2>Write a Review</h2>
+        <p>We'd love to hear about your dining experience.</p>
+    </div>
+
+    <form class="review-form">
+
+        <div class="form-row">
+
+            <div class="input-box">
+                <label>Full Name</label>
+                <input type="text" placeholder="Enter your name">
+            </div>
+
+            <div class="input-box">
+                <label>Email Address</label>
+                <input type="email" placeholder="Enter your email">
+            </div>
+
+        </div>
+
+        <div class="form-row">
+
+            <div class="input-box">
+                <label>Restaurant</label>
+
+                <select>
+                    <option>Select Restaurant</option>
+                    <option>Bella Italia</option>
+                    <option>Spice Villa</option>
+                    <option>Sushi World</option>
+                    <option>Burger Hub</option>
+                    <option>BBQ Nation</option>
+                </select>
+
+            </div>
+
+            <div class="input-box">
+
+                <label>Rating</label>
+
+                <select>
+                    <option>⭐⭐⭐⭐⭐ (5)</option>
+                    <option>⭐⭐⭐⭐ (4)</option>
+                    <option>⭐⭐⭐ (3)</option>
+                    <option>⭐⭐ (2)</option>
+                    <option>⭐ (1)</option>
+                </select>
+
+            </div>
+
+        </div>
+
+        <div class="input-box">
+
+            <label>Your Review</label>
+
+            <textarea
+                rows="6"
+                placeholder="Share your dining experience..."></textarea>
+
+        </div>
+
+        <button type="submit" class="submit-review">
+
+            <i class="fa-solid fa-paper-plane"></i>
+
+            Submit Review
+
+        </button>
+
+    </form>
+
+</section>
+<!-- ===========================
+     Footer
+=========================== -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <!-- About -->
+
+        <div class="footer-box">
+
+            <h2>
+                <i class="fa-solid fa-utensils"></i>
+                TableReserve
+            </h2>
+
+            <p>
+                Discover and reserve tables at the best restaurants in your city.
+                Enjoy hassle-free dining with instant reservations.
+            </p>
+
+            <div class="social-icons">
+
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+
+                <a href="#"><i class="fab fa-instagram"></i></a>
+
+                <a href="#"><i class="fab fa-twitter"></i></a>
+
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+
+            </div>
+
+        </div>
+
+        <!-- Quick Links -->
+
+        <div class="footer-box">
+
+            <h3>Quick Links</h3>
+
+            <ul>
+
+                <li><a href="#">Home</a></li>
+
+                <li><a href="#">Restaurants</a></li>
+
+                <li><a href="#">Reservations</a></li>
+
+                <li><a href="#">About Us</a></li>
+
+                <li><a href="#">Contact</a></li>
+
+            </ul>
+
+        </div>
+
+        <!-- Contact -->
+
+        <div class="footer-box">
+
+            <h3>Contact Us</h3>
+
+            <p>
+                <i class="fa-solid fa-location-dot"></i>
+                New Delhi, India
+            </p>
+
+            <p>
+                <i class="fa-solid fa-phone"></i>
+                +91 98765 43210
+            </p>
+
+            <p>
+                <i class="fa-solid fa-envelope"></i>
+                support@tablereserve.com
+            </p>
+
+        </div>
+
+        <!-- Newsletter -->
+
+        <div class="footer-box">
+
+            <h3>Newsletter</h3>
+
+            <p>Subscribe to receive restaurant offers and updates.</p>
+
+            <form>
+
+                <input
+                    type="email"
+                    placeholder="Enter your email">
+
+                <button>
+                    Subscribe
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <hr>
+
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 TableReserve. All Rights Reserved.
+        </p>
+
+    </div>
+
+</footer>
+    <script src="script.js"></script>
+
+</body>
+</html>
