@@ -1,1 +1,127 @@
+1. Name / Title of the Project
+
+Restaurant Table Reservation System
+
+
+
+
+2. Statement about the Problem
+
+Diners often face long waiting times at restaurants or find no tables available upon arrival. On the other hand, restaurant owners suffer financial losses due to empty tables during peak hours and unannounced cancellations (no-shows) from guests who booked over the phone.
+
+
+
+                              
+
+3. Describe the Problem Statement
+
+The traditional way of booking restaurant tables over phone calls or managing walk-ins manually on paper is inefficient.
+•	Customers cannot see real-time table availability or choose their preferred seating layout.
+•	Restaurants lack a central system to track customer history, predict peak hours, or manage waitlists when tables open up.
+•	There is no financial commitment from guests during manual booking, leading to a high percentage of no-shows which wastes restaurant resources and inventory.
+
+                                   
+
+
+
+4. Objective and Scope of the Project
+
+Objective:
+
+To build a web-based platform that allows customers to view real-time table availability, select their preferred seats, and securely book a table online. It also aims to provide restaurant owners with an admin dashboard to manage floor layouts, track bookings, and reduce no-shows using automated deposit payments.
+
+
+
+
+
+Scope:
+
+•	Customer Side: Browsing restaurants by location/cuisine, viewing an interactive table map, making reservations, pre-ordering meals, and paying deposits via Stripe and write review based on food.
+
+•	Admin Side: Manage table inventory, updating seating layouts, track daily analysis (peak hours, revenue), checking in guests via QR codes, and automated waitlist/refund handling.
+
+
+
+5. Methodology
+
+We will use Agile Methodology to develop this project in increment phases, ensuring each core feature is tested before moving to the next.
+
+•	Phase 1 (Requirements & UI Planning): Defining user roles (Customer and Admin) and planning the user interface layouts for restaurant listings, booking forms, and dashboards.
+
+•	Phase 2 (Frontend & Interactive Map): Designing a clean UI for restaurant browsing and developing the interactive, visual grid/map that allows users to click and select their preferred tables.
+
+•	Phase 3 (Database & Backend Development): Setting up the database structure for users, restaurants, and bookings. Building backend APIs to manage data storage and handle table availability checks.
+
+•	Phase 4 (Integration & Payment Gateways): Connecting the frontend visual screens with backend APIs, integrating the Stripe API for handling booking deposits, and configuring automated email alerts.
+
+•	Phase 5 (Testing & Optimization): Testing the entire connected system for smooth page transitions, checking database accuracy during simultaneous bookings, and fixing any UI bugs.
+________________________________________
+
+
+
+
+
+
+
+6. Hardware & Software to be used
+
+Hardware Requirements:
+•	Development System: Any standard Laptop/PC (Minimum 8GB RAM, Core i3/i5 processor or equivalent).
+•	Storage: 20GB of free hard disk space for code repositories, local databases, and development tools.
+•	Testing Devices: Android/iOS smartphones to test mobile responsiveness and QR code check-ins
+
+Software Requirements:
+•	Operating System: Windows 10/11, macOS, or Linux.
+•	Code Editor: Visual Studio Code (VS Code).
+•	Frontend Tech: HTML, CSS, JavaScript or React.js for better UI state management
+•	Backend Tech: Node.js with Express.js 
+•	Database:  MongoDB 
+•	Third-Party APIs: Stripe API (for payments), Nodemailer (for email notifications).
+•	Tools: Git & GitHub (for version control), Postman (for testing API endpoints). 
+________________________________________
+
+
+
+7. Future Work of this Project
+
+•	AI-Based Dynamic Pricing: Implementing an algorithm that adjusts the reservation deposit amount based on demand, peak hours, or special holidays.
+•	Voice-Activated Booking: Integrating virtual assistants like Google Assistant or Alexa to allow users to book tables via voice commands.
+•	POS (Point of Sale) Integration: Connecting the reservation and pre-order data directly with the restaurant's billing software (POS) at the venue.
+•	 Automated Marketing: Adding a module that automatically sends personalized loyalty offers or birthday discounts to repeat customers.
+________________________________________
+
+8 .ER-Diagram
+ 
+
+
+
+Gantt chart
+
+Task / Phase Name	Duration	Start Week	End Week	Deliverables / Status
+Phase 1: Requirements & UI Planning	1 Weeks	Week 1	Week 1	SRS Document, UI Wireframes & Mockups
+Phase 2: Frontend & Interactive Map	2 Weeks	Week 2	Week 3	HTML/CSS or  React.js Responsive Visual Seating Grid
+Phase 3: Database & Backend API	3 Weeks	Week 3	Week 3	Database Schema MongoDB, Core REST APIs
+Phase 4: Integration & Payment	3 Weeks	Week 3	Week 3	Connected UI with Backend, Stripe API & Email Alerts
+Phase 5: Testing & Optimization	3 Weeks	Week 3	Week 3	Bug-free Deployment, Final Project Report
+
+
+9. References and Bibliography
+•  Kimes, S. E. (2004). "Restaurant Revenue Management: Implementation at Segovia." Cornell Hospitality Quarterly, Vol. 45(1), pp. 52-63.
+•	Focus: Studied the economic impact of table allocation, time slot management, and reducing guest wait times during peak hours.
+
+•  Hwang, J., & Lambert, C. U. (2008). "The Impact of Restaurant Reservation Policies on Customer Demands and No-show Behavior." International Journal of Hospitality Management, Vol. 27(4), pp. 573-581.
+•	Focus: Analyzed customer responses to reservation deposits and how automated reminders reduce unannounced cancellations.
+
+
+
+10. Conclusion
+
+The Restaurant Table Reservation System effectively automate manual dine-in bookings. By adopting a frontend-first approach, the platform delivers an effective interface for both customers and admins before connecting to a stable backend.
+
+Key Innovations and Standout Features:
+•	Interactive Table Selection: Allows guests to view a live floor layout and pick their exact preferred table, rather than just choosing a random time slot.
+•	Upfront Deposits via Stripe: Secures bookings by collecting a small deposit at the time of reservation, which significantly reduces unannounced cancellations (no-shows).
+•	Pre-Order and Waitlist Automation: Links pre-selected meals directly to the kitchen upon booking confirmation and automatically notifies waitlisted users when a table opens up.
+
+
 
