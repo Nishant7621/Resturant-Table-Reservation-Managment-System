@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 const restaurants = [
   {
     id: 1,
@@ -46,15 +48,18 @@ const restaurants = [
   },
   {
     id: 6,
-    name: "Patil Restuarant",
+    name: "Patil Restaurant",
     rating: "4.8",
-    cuisine: "chicken curry",
+    cuisine: "Chicken Curry",
     location: "Nagpur",
-    image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsTIxG_ileqNYAr0wJ_a5K1tZ5UjSEinQBJGH3jJZPAQ&s=10",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsTIxG_ileqNYAr0wJ_a5K1tZ5UjSEinQBJGH3jJZPAQ&s=10",
   },
 ];
 
 const FeaturedRestaurants = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="py-20 px-8 bg-white">
       <div className="max-w-7xl mx-auto">
@@ -94,7 +99,14 @@ const FeaturedRestaurants = () => {
                   📍 {restaurant.location}
                 </p>
 
-                <button className="w-full bg-orange-600 hover:bg-orange-700 text-white py-3 rounded-lg transition">
+                <button
+                  onClick={() =>
+                    navigate("/reservation", {
+                      state: { restaurant },
+                    })
+                  }
+                  className="w-full bg-orange-600 hover:bg-orange-700 text-white py-3 rounded-lg transition"
+                >
                   Reserve Table
                 </button>
               </div>

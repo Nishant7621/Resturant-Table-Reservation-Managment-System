@@ -1,6 +1,6 @@
 const SearchSection = () => {
   return (
-    <section className="w-full py-20 px-8 bg-gray-100">
+    <section id="search" className="w-full py-20 px-8 bg-gray-100">
       <div className="max-w-7xl mx-auto text-center">
         <h2 className="text-4xl font-bold text-gray-800 mb-3">
           Find Your Perfect Table
@@ -39,22 +39,27 @@ const SearchSection = () => {
               <option>3 Guests</option>
               <option>4 Guests</option>
               <option>5 Guests</option>
-              <option>6+ Guests</option>
+              <option>6 Guests</option>
+              <option>7+ Guests</option>
             </select>
           </div>
 
-          {/* Location */}
+          {/* City */}
           <div className="flex flex-col flex-1 min-w-[180px]">
-            <label className="text-left font-semibold mb-2">Location</label>
+            <label className="text-left font-semibold mb-2">
+              Select City
+            </label>
 
-            <input
-              type="text"
-              placeholder="Enter City"
-              className="border border-gray-300 rounded-lg px-4 py-3 outline-none focus:border-orange-600"
-            />
+            <select className="border border-gray-300 rounded-lg px-4 py-3 outline-none focus:border-orange-600">
+              <option value="">Choose City</option>
+              <option value="Bhopal">Bhopal</option>
+              <option value="Indore">Indore</option>
+              <option value="Nagpur">Nagpur</option>
+              <option value="Pune">Pune</option>
+            </select>
           </div>
 
-          {/* Search Button */}
+          {/* Search */}
           <button className="bg-orange-600 hover:bg-orange-700 text-white px-8 py-3 rounded-lg transition duration-300">
             Search
           </button>

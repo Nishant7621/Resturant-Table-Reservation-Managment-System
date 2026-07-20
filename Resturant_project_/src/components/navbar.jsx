@@ -1,33 +1,72 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-export default function Navbar() {
+export default function Navbar({
+  heroRef,
+  restaurantRef,
+  aboutRef,
+  contactRef,
+}) {
   const navigate = useNavigate();
+
+  const scrollTo = (ref) => {
+    ref.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
 
   return (
     <nav className="fixed top-0 left-0 w-full bg-white shadow-md z-50">
-      <div className="max-w-7xl mx-auto flex items-center justify-between h-20 px-8">
-        <h1 className="text-3xl font-bold text-orange-600">
+      <div className="max-w-7xl mx-auto flex justify-between items-center h-20 px-8">
+
+        <h1
+          onClick={() => scrollTo(heroRef)}
+          className="text-3xl font-bold text-orange-600 cursor-pointer"
+        >
           🍽️ TableReserve
         </h1>
 
         <ul className="flex gap-8 font-medium">
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/restaurants">Restaurants</Link></li>
-          <li><Link to="/about">About</Link></li>
-          <li><Link to="/contact">Contact</Link></li>
+          <li
+            onClick={() => scrollTo(heroRef)}
+            className="cursor-pointer hover:text-orange-600"
+          >
+            Home
+          </li>
+
+          <li
+            onClick={() => scrollTo(restaurantRef)}
+            className="cursor-pointer hover:text-orange-600"
+          >
+            Restaurants
+          </li>
+
+          <li
+            onClick={() => scrollTo(aboutRef)}
+            className="cursor-pointer hover:text-orange-600"
+          >
+            About
+          </li>
+
+          <li
+            onClick={() => scrollTo(contactRef)}
+            className="cursor-pointer hover:text-orange-600"
+          >
+            Contact
+          </li>
         </ul>
 
         <div className="flex gap-3">
           <button
-            onClick={() => navigate("/Login")}
-            className="px-4 py-2 border border-orange-600 rounded-lg hover:bg-orange-600 hover:text-white transition"
+            onClick={() => navigate("/login")}
+            className="px-4 py-2 border border-orange-600 rounded-lg"
           >
             Login
           </button>
 
           <button
-            onClick={() => navigate("/Register")}
-            className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition"
+            onClick={() => navigate("/register")}
+            className="px-4 py-2 bg-orange-600 text-white rounded-lg"
           >
             Register
           </button>

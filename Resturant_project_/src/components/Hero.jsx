@@ -1,4 +1,4 @@
-const Hero = () => {
+const Hero = ({ searchRef }) => {
   return (
     <section
       className="h-screen bg-cover bg-center flex items-center justify-center text-center px-5"
@@ -17,7 +17,14 @@ const Hero = () => {
           few clicks.
         </p>
 
-        <button className="bg-orange-600 hover:bg-orange-700 transition duration-300 px-8 py-4 rounded-lg text-lg font-semibold">
+        <button
+          onClick={() =>
+            searchRef.current?.scrollIntoView({
+              behavior: "smooth",
+            })
+          }
+          className="bg-orange-600 hover:bg-orange-700 transition duration-300 px-8 py-4 rounded-lg text-lg font-semibold"
+        >
           Book Now
         </button>
       </div>
