@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
@@ -9,15 +9,27 @@ import Reviews from "../components/Reviews";
 import WriteReview from "../components/WriteReview";
 import Footer from "../components/Footer";
 
+
 const Home = () => {
+
   const heroRef = useRef(null);
   const searchRef = useRef(null);
   const restaurantRef = useRef(null);
   const aboutRef = useRef(null);
   const contactRef = useRef(null);
 
+
+  // store city and area
+  const [searchData, setSearchData] = useState({
+    city: "",
+    area: ""
+  });
+
+
+
   return (
     <>
+
       <Navbar
         heroRef={heroRef}
         restaurantRef={restaurantRef}
@@ -25,30 +37,47 @@ const Home = () => {
         contactRef={contactRef}
       />
 
+
       <div ref={heroRef}>
         <Hero searchRef={searchRef} />
       </div>
 
+
+
       <div ref={searchRef}>
-        <SearchSection />
+        <SearchSection 
+          setSearchData={setSearchData}
+        />
       </div>
 
+
+
       <div ref={restaurantRef}>
-        <FeaturedRestaurants />
+        <FeaturedRestaurants
+          searchData={searchData}
+        />
       </div>
+
+
 
       <div ref={aboutRef}>
         <WhyChooseUs />
       </div>
 
+
       <Reviews />
+
       <WriteReview />
+
 
       <div ref={contactRef}>
         <Footer />
       </div>
+
+
     </>
   );
 };
+
 
 export default Home;

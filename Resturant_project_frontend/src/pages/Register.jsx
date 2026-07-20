@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../services/api";
 
 const Register = () => {
   const [registerType, setRegisterType] = useState("customer");
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -34,13 +35,13 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/register",
+      const response = await api.post(
+        "/auth/register",
         {
           name:
             registerType === "customer"
               ? formData.fullName
-              : formData.ownerName,
+            : formData.ownerName,
 
           email: formData.email,
           password: formData.password,
@@ -48,7 +49,7 @@ const Register = () => {
         }
       );
 
-      alert(response.data.message);
+      alert(`${response.data.message}. Please log in.`);
 
       console.log(response.data);
 
@@ -64,6 +65,7 @@ const Register = () => {
         password: "",
         confirmPassword: "",
       });
+      navigate("/login");
 
     } catch (error) {
       alert(error.response?.data?.message || "Registration Failed");
@@ -98,14 +100,14 @@ const Register = () => {
 
           <button
             type="button"
-            onClick={() => setRegisterType("admin")}
+            onClick={() => setRegisterType("restaurant")}
             className={`w-1/2 py-3 font-semibold ${
-              registerType === "admin"
+              registerType === "restaurant"
                 ? "bg-orange-600 text-white"
                 : "bg-white"
             }`}
           >
-            Admin
+            Restaurant
           </button>
 
         </div>
@@ -310,7 +312,7 @@ const Register = () => {
           >
             {registerType === "customer"
               ? "Customer Register"
-              : "Admin Register"}
+              : "Restaurant Register"}
           </button>
 
         </form>

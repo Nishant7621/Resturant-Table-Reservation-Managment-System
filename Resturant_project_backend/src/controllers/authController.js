@@ -5,10 +5,20 @@ import jwt from "jsonwebtoken";
 // ================= Register User =================
 export const registerUser = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, role = "customer" } = req.body;
+
+    if (!name || !email || !password) {
+      return res.status(400).json({ success: false, message: "Name, email, and password are required" });
+    }
+    if (password.length < 6) {
+      return res.status(400).json({ success: false, message: "Password must be at least 6 characters" });
+    }
+    if (!["customer", "restaurant"].includes(role)) {
+      return res.status(400).json({ success: false, message: "Invalid account type" });
+    }
 
     // Check if user already exists
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email: email.toLowerCase().trim() });
 
     if (existingUser) {
       return res.status(400).json({
@@ -61,7 +71,7 @@ export const loginUser = async (req, res) => {
     }
 
     // Find user
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: email.toLowerCase().trim() });
 
     if (!user) {
       return res.status(404).json({
