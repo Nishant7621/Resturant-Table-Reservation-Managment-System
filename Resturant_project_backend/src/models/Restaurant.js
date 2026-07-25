@@ -3,6 +3,12 @@ import mongoose from "mongoose";
 
 const restaurantSchema = new mongoose.Schema(
 {
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        unique: true,
+        sparse: true
+    },
     name:{
         type:String,
         required:true
@@ -20,7 +26,7 @@ const restaurantSchema = new mongoose.Schema(
 
     cuisine:{
         type:String,
-        required:true
+        default:"Restaurant"
     },
 
     rating:{
@@ -37,6 +43,12 @@ const restaurantSchema = new mongoose.Schema(
         type:String,
         required:true
     },
+
+    ownerName: { type: String, trim: true },
+    email: { type: String, trim: true, lowercase: true },
+    phone: { type: String, trim: true },
+    gstNumber: { type: String, trim: true, uppercase: true },
+    fssaiNumber: { type: String, trim: true },
 
     tables:{
         type:Number,

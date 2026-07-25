@@ -1,11 +1,12 @@
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import Restaurant from "../models/Restaurant.js";
 
 // ================= Register User =================
 export const registerUser = async (req, res) => {
   try {
-    const { name, email, password, role = "customer" } = req.body;
+    const { name, email, password, role = "customer", phone, restaurantName, ownerName, gstNumber, fssaiNumber, city, area, image } = req.body;
 
     if (!name || !email || !password) {
       return res.status(400).json({ success: false, message: "Name, email, and password are required" });
@@ -15,6 +16,9 @@ export const registerUser = async (req, res) => {
     }
     if (!["customer", "restaurant"].includes(role)) {
       return res.status(400).json({ success: false, message: "Invalid account type" });
+    }
+    if (role === "restaurant" && (!restaurantName || !ownerName || !gstNumber || !fssaiNumber || !city || !area || !phone || !image)) {
+      return res.status(400).json({ success: false, message: "All restaurant registration fields are required" });
     }
 
     // Check if user already exists
@@ -36,7 +40,23 @@ export const registerUser = async (req, res) => {
       email,
       password: hashedPassword,
       role,
+      phone,
     });
+
+    if (role === "restaurant") {
+      await Restaurant.create({
+        owner: user._id,
+        name: restaurantName,
+        ownerName,
+        email: user.email,
+        phone,
+        gstNumber,
+        fssaiNumber,
+        city,
+        area,
+        image,
+      });
+    }
 
     res.status(201).json({
       success: true,
@@ -60,7 +80,7 @@ export const registerUser = async (req, res) => {
 // ================= Login User =================
 export const loginUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, role } = req.body;
 
     // Check if email and password are provided
     if (!email || !password) {
@@ -87,6 +107,13 @@ export const loginUser = async (req, res) => {
       return res.status(401).json({
         success: false,
         message: "Invalid email or password",
+      });
+    }
+
+    if (role && user.role !== role) {
+      return res.status(403).json({
+        success: false,
+        message: `This account is registered as a ${user.role}. Please choose the correct login type.`,
       });
     }
 

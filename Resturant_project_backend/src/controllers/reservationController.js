@@ -1,4 +1,5 @@
 import Reservation from "../models/Reservation.js";
+import Restaurant from "../models/Restaurant.js";
 
 
 // Create Reservation
@@ -16,6 +17,8 @@ export const createReservation = async (req, res) => {
         if (!restaurant || !date || !time || !Number.isInteger(Number(guests)) || Number(guests) < 1) {
             return res.status(400).json({ success: false, message: "Restaurant, date, time, and a valid guest count are required" });
         }
+        const restaurantExists = await Restaurant.exists({ _id: restaurant });
+        if (!restaurantExists) return res.status(404).json({ success: false, message: "Restaurant not found" });
 
 
         const reservation = await Reservation.create({
@@ -37,7 +40,7 @@ export const createReservation = async (req, res) => {
 
             success: true,
 
-            message: "Table reserved successfully",
+            message: "Booking request sent to the restaurant",
 
             reservation
 

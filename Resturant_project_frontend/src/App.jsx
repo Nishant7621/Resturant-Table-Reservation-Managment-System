@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Reservation from "./pages/Reservation";
 import Bookings from "./pages/Bookings";
+import RestaurantDashboard from "./pages/RestaurantDashboard";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
 
       <Route path="/reservation" element={<Reservation />} />
       <Route path="/bookings" element={<Bookings />} />
+      <Route path="/restaurant-dashboard" element={<RestaurantDashboard />} />
     </Routes>
   );
 }

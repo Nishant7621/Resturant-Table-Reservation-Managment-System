@@ -174,12 +174,21 @@ export default function Navbar({
 
 
 
-                  <button
-                    onClick={() => navigate("/bookings")}
-                    className="block w-full text-left py-2 hover:text-orange-600"
-                  >
-                    🍽️ My Bookings
-                  </button>
+                  {user.role === "restaurant" ? (
+                    <button
+                      onClick={() => navigate("/restaurant-dashboard")}
+                      className="block w-full text-left py-2 hover:text-orange-600"
+                    >
+                      Restaurant Dashboard
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => navigate("/bookings")}
+                      className="block w-full text-left py-2 hover:text-orange-600"
+                    >
+                      🍽️ My Bookings
+                    </button>
+                  )}
 
 
 

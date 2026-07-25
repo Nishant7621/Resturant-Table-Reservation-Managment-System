@@ -4,121 +4,26 @@ import api from "../services/api";
 
 const Login = () => {
   const navigate = useNavigate();
+  const [loginType, setLoginType] = useState("customer");
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [error, setError] = useState("");
 
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const handleSubmit = async (event) => {
+    event.preventDefault(); setError("");
     try {
-      const response = await api.post(
-        "/auth/login",
-        {
-          email: formData.email,
-          password: formData.password,
-        }
-      );
-
-// Store JWT Token
-localStorage.setItem("token", response.data.token);
-
-// Store User Details
-localStorage.setItem(
-  "user",
-  JSON.stringify(response.data.user)
-);
-
-// Notify Navbar about login
-window.dispatchEvent(new Event("storage"));
-
-      alert(response.data.message);
-
-      navigate("/");
-
-    } catch (error) {
-      alert(
-        error.response?.data?.message ||
-        "Login Failed"
-      );
-    }
+      const { data } = await api.post("/auth/login", { ...formData, role: loginType });
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      window.dispatchEvent(new Event("storage"));
+      navigate(loginType === "restaurant" ? "/restaurant-dashboard" : "/");
+    } catch (requestError) { setError(requestError.response?.data?.message || "Login failed. Please try again."); }
   };
-  return (
-    <div className="min-h-screen bg-orange-50 flex items-center justify-center px-4">
-      <div className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-md">
 
-        <h1 className="text-3xl font-bold text-center text-orange-600 mb-2">
-          Login
-        </h1>
-
-        <p className="text-center text-gray-500 mb-8">
-          Welcome to TableReserve
-        </p>
-
-        <form className="space-y-5" onSubmit={handleSubmit}>
-
-          <div>
-            <label className="block mb-2 font-medium">
-              Email
-            </label>
-
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Enter Email"
-              required
-              className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
-            />
-          </div>
-
-          <div>
-            <label className="block mb-2 font-medium">
-              Password
-            </label>
-
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Enter Password"
-              required
-              className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-orange-600 text-white py-3 rounded-lg hover:bg-orange-700 transition"
-          >
-            Login
-          </button>
-
-        </form>
-
-        <p className="text-center mt-6 text-gray-600">
-          Don't have an account?{" "}
-          <Link
-            to="/register"
-            className="text-orange-600 font-semibold hover:underline"
-          >
-            Register
-          </Link>
-        </p>
-
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-orange-50 flex items-center justify-center px-4"><div className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-md"><h1 className="text-3xl font-bold text-center text-orange-600 mb-2">Login</h1><p className="text-center text-gray-500 mb-8">Welcome to TableReserve</p>
+    <div className="flex mb-8 border rounded-lg overflow-hidden"><button type="button" onClick={() => { setLoginType("customer"); setError(""); }} className={`w-1/2 py-3 font-semibold ${loginType === "customer" ? "bg-orange-600 text-white" : "bg-white"}`}>Customer Login</button><button type="button" onClick={() => { setLoginType("restaurant"); setError(""); }} className={`w-1/2 py-3 font-semibold ${loginType === "restaurant" ? "bg-orange-600 text-white" : "bg-white"}`}>Restaurant Login</button></div>
+    <form className="space-y-5" onSubmit={handleSubmit}><p className="text-center font-medium text-gray-700">{loginType === "restaurant" ? "Restaurant owner login" : "Customer login"}</p><label className="block"><span className="block mb-2 font-medium">Email</span><input type="email" value={formData.email} onChange={(event) => setFormData({ ...formData, email: event.target.value })} placeholder="Enter email" required className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500" /></label><label className="block"><span className="block mb-2 font-medium">Password</span><input type="password" value={formData.password} onChange={(event) => setFormData({ ...formData, password: event.target.value })} placeholder="Enter password" required className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500" /></label>{error && <p className="text-center text-red-600">{error}</p>}<button type="submit" className="w-full bg-orange-600 text-white py-3 rounded-lg hover:bg-orange-700">{loginType === "restaurant" ? "Restaurant Login" : "Customer Login"}</button></form>
+    <p className="text-center mt-6 text-gray-600">Don't have an account? <Link to="/register" className="text-orange-600 font-semibold hover:underline">Register</Link></p>
+  </div></div>;
 };
 
 export default Login;
