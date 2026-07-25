@@ -104,6 +104,10 @@ const FeaturedRestaurants = ({ searchData }) => {
                         {restaurant.name}
                       </h3>
 
+                      <div className="mb-4 inline-flex rounded-full bg-orange-50 px-3 py-1 text-sm font-semibold text-orange-700">
+                        ₹50 reservation charge / guest
+                      </div>
+
 
 
                       <div className="flex justify-between text-gray-600 mb-3">

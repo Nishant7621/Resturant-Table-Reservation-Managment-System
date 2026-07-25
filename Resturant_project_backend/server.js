@@ -57,7 +57,8 @@ app.get("/", (req, res) => {
 const PORT = process.env.PORT || 5000;
 
 
-// Start Server
+// Start Server locally. Vercel imports the app as a serverless function.
+if (!process.env.VERCEL) {
 app.listen(PORT, () => {
 
   console.log(
@@ -65,3 +66,6 @@ app.listen(PORT, () => {
   );
 
 });
+}
+
+export default app;

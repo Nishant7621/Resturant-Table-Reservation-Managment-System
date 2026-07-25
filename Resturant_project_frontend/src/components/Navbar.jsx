@@ -112,7 +112,7 @@ export default function Navbar({
             onClick={() => scrollTo(contactRef)}
             className="cursor-pointer hover:text-orange-600"
           >
-            Contact
+            Contact & Support
           </li>
 
 
