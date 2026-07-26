@@ -4,7 +4,17 @@ import api from "../services/api";
 export default function Reviews() {
   const [reviews, setReviews] = useState([]);
   useEffect(() => { api.get("/reviews").then(({ data }) => setReviews(data.reviews)).catch(() => setReviews([])); }, []);
-  return <section className="py-20 bg-gray-100"><div className="text-center mb-12"><h2 className="text-4xl font-bold text-orange-600">What Our Customers Say</h2><p className="text-gray-600 mt-3">Real experiences shared by our diners.</p></div>
-    <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-8 px-6">{reviews.length ? reviews.map((review) => <article key={review._id} className="bg-white rounded-xl shadow-lg p-6"><h3 className="font-bold text-lg">{review.user?.name || "TableReserve customer"}</h3><div className="text-yellow-500 text-xl my-3">{"★".repeat(review.rating)}{"☆".repeat(5 - review.rating)}</div><p className="text-gray-600">{review.comment}</p><p className="mt-5 text-sm text-gray-500">🍽️ {review.restaurant?.name} · {new Date(review.createdAt).toLocaleDateString()}</p></article>) : <p className="md:col-span-3 text-center text-gray-500">No reviews yet. Be the first to share your experience.</p>}</div>
+
+  return <section className="section-space bg-orange-50">
+    <div className="container-page">
+      <div className="mb-12 text-center"><p className="eyebrow">Guest stories</p><h2 className="display-title mt-2 text-4xl font-bold sm:text-5xl">Loved by local diners</h2><p className="mt-3 text-stone-500">Real experiences shared by our community.</p></div>
+      <div className="grid gap-6 md:grid-cols-3">
+        {reviews.length ? reviews.map((review) => <article key={review._id} className="surface rounded-3xl p-7">
+          <div className="text-lg tracking-wider text-orange-500">{"★".repeat(review.rating)}<span className="text-stone-200">{"★".repeat(5 - review.rating)}</span></div>
+          <p className="mt-5 text-lg leading-7 text-stone-700">“{review.comment}”</p>
+          <div className="mt-7 border-t border-stone-100 pt-5"><h3 className="font-bold">{review.user?.name || "TableReserve customer"}</h3><p className="mt-1 text-sm text-stone-500">{review.restaurant?.name} · {new Date(review.createdAt).toLocaleDateString()}</p></div>
+        </article>) : <div className="md:col-span-3 rounded-3xl border border-dashed border-orange-200 bg-white p-10 text-center"><p className="font-bold text-stone-700">Be the first to share a dining story.</p></div>}
+      </div>
+    </div>
   </section>;
 }

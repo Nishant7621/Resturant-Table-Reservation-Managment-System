@@ -1,383 +1,54 @@
 import { useState } from "react";
 
-const SearchSection = ({ setSearchData }) => {
-
-  const [city, setCity] = useState("");
-  const [area, setArea] = useState("");
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
-  const [guests, setGuests] = useState(2);
-
-
-  const cityAreas = {
-
-    Bhopal: [
-      "MP Nagar",
-      "Indrapuri",
-      "Kolar Hills",
-      "Mandideep",
-      "New Market",
-      "Awadhpuri",
-      "Hoshangabad Road"
-    ],
-
-
-    Indore: [
-      "Vijay Nagar",
-      "Palasia",
-      "Bhawarkua",
-      "Rau",
-      "Scheme No. 78",
-      "MG Road",
-      "Sapna Sangeeta Road"
-    ],
-
-
-    Nagpur: [
-      "Dharampeth",
-      "Sadar",
-      "Sitabuldi",
-      "Manish Nagar",
-      "Wardha Road",
-      "Pratap Nagar",
-      "Civil Lines"
-    ],
-
-
-    Pune: [
-      "Koregaon Park",
-      "Viman Nagar",
-      "Baner",
-      "Hinjewadi",
-      "Kothrud",
-      "Shivajinagar",
-      "FC Road"
-    ]
-
-  };
-
-
-
-  const handleSearch = () => {
-
-    setSearchData({
-      city,
-      area,
-      date,
-      time,
-      guests
-    });
-
-  };
-
-
-
-  return (
-
-    <section 
-      id="search" 
-      className="w-full py-20 px-8 bg-gray-100"
-    >
-
-
-      <div className="max-w-7xl mx-auto text-center">
-
-
-        <h2 className="text-4xl font-bold text-gray-800 mb-3">
-          Find Your Perfect Table
-        </h2>
-
-
-        <p className="text-gray-500 mb-12">
-          Search restaurants by date, time, guests, city and area.
-        </p>
-
-
-
-
-        <div className="
-          bg-white
-          shadow-xl
-          rounded-2xl
-          p-8
-          flex
-          flex-wrap
-          gap-5
-          items-end
-          justify-between
-        ">
-
-
-
-          {/* Date */}
-
-          <div className="flex flex-col flex-1 min-w-[180px]">
-
-            <label className="text-left font-semibold mb-2">
-              Date
-            </label>
-
-
-            <input
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              className="border border-gray-300 rounded-lg px-4 py-3"
-            />
-
-          </div>
-
-
-
-
-          {/* Time */}
-
-          <div className="flex flex-col flex-1 min-w-[180px]">
-
-            <label className="text-left font-semibold mb-2">
-              Time
-            </label>
-
-
-            <input
-              type="time"
-              value={time}
-              onChange={(e) => setTime(e.target.value)}
-              className="border border-gray-300 rounded-lg px-4 py-3"
-            />
-
-          </div>
-
-
-
-
-
-          {/* Guests */}
-
-          <div className="flex flex-col flex-1 min-w-[180px]">
-
-            <label className="text-left font-semibold mb-2">
-              Guests
-            </label>
-
-
-            <select
-              value={guests}
-              onChange={(e) => setGuests(e.target.value)}
-              className="border border-gray-300 rounded-lg px-4 py-3"
-            >
-
-              <option value="1">
-                1 Guest
-              </option>
-
-              <option value="2">
-                2 Guests
-              </option>
-
-              <option value="3">
-                3 Guests
-              </option>
-
-              <option value="4">
-                4 Guests
-              </option>
-
-              <option value="5">
-                5 Guests
-              </option>
-
-              <option value="6">
-                6 Guests
-              </option>
-
-              <option value="7">
-                7+ Guests
-              </option>
-
-
-            </select>
-
-          </div>
-
-
-
-
-
-          {/* City */}
-
-          <div className="flex flex-col flex-1 min-w-[180px]">
-
-
-            <label className="text-left font-semibold mb-2">
-              Select City
-            </label>
-
-
-
-            <select
-
-              value={city}
-
-              onChange={(e)=>{
-
-                setCity(e.target.value);
-                setArea("");
-
-              }}
-
-              className="
-              border
-              border-gray-300
-              rounded-lg
-              px-4
-              py-3
-              "
-
-            >
-
-
-              <option value="">
-                Choose City
-              </option>
-
-
-              <option value="Bhopal">
-                Bhopal
-              </option>
-
-
-              <option value="Indore">
-                Indore
-              </option>
-
-
-              <option value="Nagpur">
-                Nagpur
-              </option>
-
-
-              <option value="Pune">
-                Pune
-              </option>
-
-
-            </select>
-
-
-          </div>
-
-
-
-
-
-
-
-          {/* Area */}
-
-
-          <div className="flex flex-col flex-1 min-w-[180px]">
-
-
-            <label className="text-left font-semibold mb-2">
-              Select Area
-            </label>
-
-
-
-            <select
-
-              value={area}
-
-              onChange={(e)=>setArea(e.target.value)}
-
-              disabled={!city}
-
-              className="
-              border
-              border-gray-300
-              rounded-lg
-              px-4
-              py-3
-              disabled:bg-gray-200
-              "
-
-            >
-
-
-              <option value="">
-                {
-                  city
-                  ? "Choose Area"
-                  : "Select City First"
-                }
-              </option>
-
-
-
-              {
-                city &&
-                cityAreas[city].map((item,index)=>(
-
-                  <option 
-                    key={index}
-                    value={item}
-                  >
-                    {item}
-                  </option>
-
-                ))
-              }
-
-
-            </select>
-
-
-          </div>
-
-
-
-
-
-
-
-          {/* Search Button */}
-
-
-          <button
-
-            onClick={handleSearch}
-
-            className="
-            bg-orange-600
-            hover:bg-orange-700
-            text-white
-            px-8
-            py-3
-            rounded-lg
-            transition
-            "
-
-          >
-
-            Search
-
-          </button>
-
-
-
-
-        </div>
-
-
-      </div>
-
-
-    </section>
-
-  );
-
+const cityAreas = {
+  Bhopal: ["MP Nagar", "Indrapuri", "Kolar Hills", "Mandideep", "New Market", "Awadhpuri", "Hoshangabad Road"],
+  Indore: ["Vijay Nagar", "Palasia", "Bhawarkua", "Rau", "Scheme No. 78", "MG Road", "Sapna Sangeeta Road"],
+  Nagpur: ["Dharampeth", "Sadar", "Sitabuldi", "Manish Nagar", "Wardha Road", "Pratap Nagar", "Civil Lines"],
+  Pune: ["Koregaon Park", "Viman Nagar", "Baner", "Hinjewadi", "Kothrud", "Shivajinagar", "FC Road"],
 };
 
+export default function SearchSection({ setSearchData }) {
+  const [form, setForm] = useState({ city: "", area: "", date: "", time: "", guests: 2 });
+  const update = (name, value) => setForm((current) => ({ ...current, [name]: value }));
 
-export default SearchSection;
+  const submit = (event) => {
+    event.preventDefault();
+    setSearchData(form);
+    document.querySelector("[data-restaurants]")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  return <section id="search" className="relative z-20 -mt-12 px-3">
+    <div className="container-page">
+      <form onSubmit={submit} className="surface rounded-[28px] p-5 sm:p-7">
+        <div className="mb-6 flex flex-col justify-between gap-2 md:flex-row md:items-end">
+          <div><p className="eyebrow">Book your table</p><h2 className="display-title mt-2 text-3xl font-bold sm:text-4xl">Where would you like to dine?</h2></div>
+          <p className="text-sm text-stone-500">Search approved restaurant partners</p>
+        </div>
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-[1.1fr_1fr_1fr_1fr_1fr_auto] xl:items-end">
+          <label className="text-sm font-bold text-stone-700">City
+            <select required value={form.city} onChange={(event) => setForm({ ...form, city: event.target.value, area: "" })} className="input-ui mt-2 font-normal">
+              <option value="">Choose city</option>{Object.keys(cityAreas).map((city) => <option key={city}>{city}</option>)}
+            </select>
+          </label>
+          <label className="text-sm font-bold text-stone-700">Area
+            <select value={form.area} onChange={(event) => update("area", event.target.value)} disabled={!form.city} className="input-ui mt-2 font-normal">
+              <option value="">{form.city ? "Any area" : "Choose city first"}</option>{form.city && cityAreas[form.city].map((area) => <option key={area}>{area}</option>)}
+            </select>
+          </label>
+          <label className="text-sm font-bold text-stone-700">Date
+            <input type="date" min={new Date().toISOString().slice(0, 10)} value={form.date} onChange={(event) => update("date", event.target.value)} className="input-ui mt-2 font-normal" />
+          </label>
+          <label className="text-sm font-bold text-stone-700">Time
+            <input type="time" value={form.time} onChange={(event) => update("time", event.target.value)} className="input-ui mt-2 font-normal" />
+          </label>
+          <label className="text-sm font-bold text-stone-700">Guests
+            <select value={form.guests} onChange={(event) => update("guests", event.target.value)} className="input-ui mt-2 font-normal">
+              {[1,2,3,4,5,6,7,8].map((guests) => <option key={guests} value={guests}>{guests} {guests === 1 ? "guest" : "guests"}</option>)}
+            </select>
+          </label>
+          <button className="btn-primary h-[50px] px-7" type="submit">Search</button>
+        </div>
+      </form>
+    </div>
+  </section>;
+}

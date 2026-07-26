@@ -7,6 +7,7 @@ import Reservation from "./pages/Reservation";
 import Bookings from "./pages/Bookings";
 import RestaurantDashboard from "./pages/RestaurantDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
       <Route path="/bookings" element={<Bookings />} />
       <Route path="/restaurant-dashboard" element={<RestaurantDashboard />} />
       <Route path="/admin" element={<AdminDashboard />} />
+      <Route path="/profile" element={<Profile />} />
     </Routes>
   );
 }

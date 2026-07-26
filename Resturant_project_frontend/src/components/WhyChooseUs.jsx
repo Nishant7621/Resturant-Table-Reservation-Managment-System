@@ -1,71 +1,16 @@
 const features = [
-  {
-    id: 1,
-    icon: "🍽️",
-    title: "Easy Booking",
-    description:
-      "Reserve your favorite table in just a few clicks without any hassle.",
-  },
-  {
-    id: 2,
-    icon: "⚡",
-    title: "Instant Confirmation",
-    description:
-      "Get immediate booking confirmation with real-time table availability.",
-  },
-  {
-    id: 3,
-    icon: "🛡️",
-    title: "Secure Reservation",
-    description:
-      "Your reservation details are protected with secure booking management.",
-  },
-  {
-    id: 4,
-    icon: "🎧",
-    title: "24/7 Support",
-    description:
-      "Our support team is available anytime to help with your reservations.",
-  },
+  ["01", "Discover", "Explore restaurants by city and area, with clear cuisine and location details."],
+  ["02", "Request", "Choose your date, time and party size, then send your table request."],
+  ["03", "Manage", "Follow the status from your bookings page while restaurants manage requests."],
 ];
 
-const WhyChooseUs = () => {
-  return (
-    <section className="py-20 px-8 bg-gray-100">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-14">
-          <h2 className="text-4xl font-bold text-gray-800">
-            Why Choose Us
-          </h2>
-
-          <p className="text-gray-500 mt-3">
-            Experience hassle-free restaurant reservations with our platform.
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {features.map((feature) => (
-            <div
-              key={feature.id}
-              className="bg-white p-8 rounded-2xl shadow-lg text-center hover:-translate-y-2 hover:shadow-2xl transition duration-300"
-            >
-              <div className="w-20 h-20 bg-orange-600 rounded-full flex items-center justify-center text-4xl mx-auto mb-6">
-                {feature.icon}
-              </div>
-
-              <h3 className="text-2xl font-semibold text-gray-800 mb-4">
-                {feature.title}
-              </h3>
-
-              <p className="text-gray-600 leading-7">
-                {feature.description}
-              </p>
-            </div>
-          ))}
-        </div>
+export default function WhyChooseUs() {
+  return <section id="how-it-works" className="section-space bg-[#211b18] text-white">
+    <div className="container-page">
+      <div className="grid gap-12 lg:grid-cols-[.8fr_1.2fr] lg:items-end">
+        <div><p className="eyebrow !text-orange-400">Simple by design</p><h2 className="display-title mt-3 text-4xl font-bold sm:text-6xl">From craving to table in three easy steps.</h2><p className="mt-6 max-w-lg leading-7 text-stone-400">No confusing phone calls. Find approved restaurants and keep every request in one place.</p></div>
+        <div className="grid gap-4 sm:grid-cols-3">{features.map(([number, title, description]) => <article key={number} className="rounded-3xl border border-white/10 bg-white/[.06] p-6"><span className="font-mono text-sm font-bold text-orange-400">{number}</span><h3 className="mt-10 text-2xl font-bold">{title}</h3><p className="mt-3 text-sm leading-6 text-stone-400">{description}</p></article>)}</div>
       </div>
-    </section>
-  );
-};
-
-export default WhyChooseUs;
+    </div>
+  </section>;
+}

@@ -1,65 +1,12 @@
 export default function Footer() {
-  return (
-    <footer className="bg-gray-900 text-white pt-14 pb-6">
-      <div className="max-w-7xl mx-auto grid gap-10 px-8 md:grid-cols-3">
-        <div>
-          <h2 className="text-3xl font-bold text-orange-500 mb-4">
-            🍽️ TableReserve
-          </h2>
-          <p className="text-gray-300 leading-7">
-            Discover and reserve tables at the best restaurants in your city.
-            Enjoy hassle-free dining with instant reservations.
-          </p>
-        </div>
-
-        <div>
-          <h3 className="text-2xl font-semibold mb-4">Connect With Us</h3>
-          <p className="text-gray-300 leading-7">
-            Need help with a reservation or facing a problem? Our support team
-            is here to help you.
-          </p>
-          <a
-            href="tel:+919328894602"
-            className="mt-4 inline-flex items-center rounded-lg bg-orange-600 px-5 py-3 font-semibold transition hover:bg-orange-700"
-          >
-            Call Support
-          </a>
-        </div>
-
-        <div>
-          <h3 className="text-2xl font-semibold mb-4">Contact & Support</h3>
-          <address className="not-italic space-y-4 text-gray-300">
-            <a
-              href="https://www.google.com/maps/search/?api=1&query=Awadhpuri%2C+Bhopal"
-              target="_blank"
-              rel="noreferrer"
-              className="flex gap-3 transition hover:text-orange-500"
-            >
-              <span aria-hidden="true">📍</span>
-              <span>Awadhpuri, Bhopal, Madhya Pradesh</span>
-            </a>
-            <a
-              href="tel:+919328894602"
-              className="flex gap-3 transition hover:text-orange-500"
-            >
-              <span aria-hidden="true">📞</span>
-              <span>+91 93288 94602</span>
-            </a>
-            <a
-              href="mailto:nishantjha203@gmail.com?subject=TableReserve%20Support"
-              className="flex gap-3 break-all transition hover:text-orange-500"
-            >
-              <span aria-hidden="true">✉️</span>
-              <span>nishantjha203@gmail.com</span>
-            </a>
-          </address>
-        </div>
+  return <footer className="bg-stone-950 py-14 text-white">
+    <div className="container-page">
+      <div className="grid gap-10 md:grid-cols-[1.2fr_.8fr_.8fr]">
+        <div><div className="flex items-center gap-2"><span className="grid h-10 w-10 place-items-center rounded-xl bg-orange-600 font-bold">T</span><h2 className="text-2xl font-extrabold">TableReserve</h2></div><p className="mt-5 max-w-md leading-7 text-stone-400">Discover approved restaurants and manage every table request from one simple account.</p></div>
+        <div><h3 className="font-bold">Explore</h3><div className="mt-5 flex flex-col gap-3 text-sm text-stone-400"><a href="#search" className="hover:text-orange-400">Find restaurants</a><a href="#how-it-works" className="hover:text-orange-400">How it works</a><a href="/login" className="hover:text-orange-400">Account login</a></div></div>
+        <div><h3 className="font-bold">Support</h3><address className="mt-5 flex flex-col gap-3 text-sm not-italic text-stone-400"><span>Awadhpuri, Bhopal</span><a href="tel:+919328894602" className="hover:text-orange-400">+91 93288 94602</a><a href="mailto:nishantjha203@gmail.com?subject=TableReserve%20Support" className="break-all hover:text-orange-400">nishantjha203@gmail.com</a></address></div>
       </div>
-
-      <hr className="border-gray-700 my-8" />
-      <div className="text-center text-gray-400">
-        © 2026 TableReserve. All Rights Reserved.
-      </div>
-    </footer>
-  );
+      <div className="mt-12 flex flex-col justify-between gap-3 border-t border-white/10 pt-6 text-xs text-stone-500 sm:flex-row"><span>© 2026 TableReserve. All rights reserved.</span><span>Made for better dining experiences.</span></div>
+    </div>
+  </footer>;
 }
