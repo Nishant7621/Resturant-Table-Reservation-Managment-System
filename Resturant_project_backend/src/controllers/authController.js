@@ -55,12 +55,15 @@ export const registerUser = async (req, res) => {
         city,
         area,
         image,
+        approvalStatus: "pending",
       });
     }
 
     res.status(201).json({
       success: true,
-      message: "User registered successfully",
+      message: role === "restaurant"
+        ? "Registration submitted. Your restaurant will remain hidden until an admin approves it"
+        : "User registered successfully",
       user: {
         id: user._id,
         name: user.name,

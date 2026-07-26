@@ -8,6 +8,7 @@ import authRoutes from "./src/routes/authRoutes.js";
 import reservationRoutes from "./src/routes/reservationRoutes.js";
 import restaurantRoutes from "./src/routes/restaurantRoutes.js";
 import reviewRoutes from "./src/routes/reviewRoutes.js";
+import adminRoutes from "./src/routes/adminRoutes.js";
 
 
 // Load Environment Variables
@@ -38,6 +39,7 @@ app.use(
 );
 app.use("/api/restaurants", restaurantRoutes);
 app.use("/api/reviews", reviewRoutes);
+app.use("/api/admin", adminRoutes);
 
 
 

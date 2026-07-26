@@ -17,7 +17,10 @@ try {
   if (!process.env.MONGO_URI) throw new Error("MONGO_URI is missing. Create .env from .env.example first.");
   await mongoose.connect(process.env.MONGO_URI);
   const count = await Restaurant.countDocuments();
-  if (count === 0) { await Restaurant.insertMany(restaurants); console.log("Seeded restaurants."); }
+  if (count === 0) {
+    await Restaurant.insertMany(restaurants.map((restaurant) => ({ ...restaurant, approvalStatus: "approved" })));
+    console.log("Seeded restaurants.");
+  }
   else console.log("Restaurants already exist; no data was changed.");
 } catch (error) { console.error(error.message); process.exitCode = 1; }
 finally { await mongoose.disconnect(); }

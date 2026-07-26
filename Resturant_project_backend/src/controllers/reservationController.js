@@ -17,7 +17,7 @@ export const createReservation = async (req, res) => {
         if (!restaurant || !date || !time || !Number.isInteger(Number(guests)) || Number(guests) < 1) {
             return res.status(400).json({ success: false, message: "Restaurant, date, time, and a valid guest count are required" });
         }
-        const restaurantExists = await Restaurant.exists({ _id: restaurant });
+        const restaurantExists = await Restaurant.exists({ _id: restaurant, approvalStatus: "approved" });
         if (!restaurantExists) return res.status(404).json({ success: false, message: "Restaurant not found" });
 
 

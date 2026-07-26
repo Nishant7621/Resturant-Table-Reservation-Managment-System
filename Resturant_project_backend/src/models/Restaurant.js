@@ -50,6 +50,16 @@ const restaurantSchema = new mongoose.Schema(
     gstNumber: { type: String, trim: true, uppercase: true },
     fssaiNumber: { type: String, trim: true },
 
+    approvalStatus: {
+        type: String,
+        enum: ["pending", "approved", "rejected"],
+        default: "pending",
+        index: true
+    },
+    approvalNote: { type: String, trim: true, default: "" },
+    reviewedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    reviewedAt: { type: Date },
+
     tables:{
         type:Number,
         default:10

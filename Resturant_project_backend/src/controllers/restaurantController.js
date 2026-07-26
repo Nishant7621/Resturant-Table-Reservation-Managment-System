@@ -3,7 +3,7 @@ import Reservation from "../models/Reservation.js";
 
 export const getRestaurants = async (req, res) => {
   try {
-    const query = {};
+    const query = { approvalStatus: "approved" };
     if (req.query.city) query.city = new RegExp(`^${req.query.city}$`, "i");
     if (req.query.area) query.area = new RegExp(`^${req.query.area}$`, "i");
     if (req.query.guests) query.tables = { $gte: Math.ceil(Number(req.query.guests) / 4) };
@@ -14,7 +14,7 @@ export const getRestaurants = async (req, res) => {
 
 export const getRestaurantById = async (req, res) => {
   try {
-    const restaurant = await Restaurant.findById(req.params.id);
+    const restaurant = await Restaurant.findOne({ _id: req.params.id, approvalStatus: "approved" });
     if (!restaurant) return res.status(404).json({ success: false, message: "Restaurant not found" });
     res.json({ success: true, restaurant });
   } catch { res.status(400).json({ success: false, message: "Invalid restaurant id" }); }
