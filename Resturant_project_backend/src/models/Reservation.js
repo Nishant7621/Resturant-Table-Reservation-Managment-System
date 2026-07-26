@@ -43,7 +43,29 @@ const reservationSchema = new mongoose.Schema(
 
     bookingFee:{
         type:Number,
-        default:500
+        default:50
+    },
+
+    paymentStatus: {
+        type: String,
+        enum: ["not_started", "created", "paid", "failed", "refunded"],
+        default: "not_started",
+        index: true
+    },
+
+    razorpayOrderId: {
+        type: String,
+        unique: true,
+        sparse: true
+    },
+
+    razorpayPaymentId: {
+        type: String,
+        sparse: true
+    },
+
+    paidAt: {
+        type: Date
     }
 
 },

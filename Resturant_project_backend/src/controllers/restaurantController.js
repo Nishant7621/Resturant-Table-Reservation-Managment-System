@@ -24,7 +24,10 @@ export const getOwnerDashboard = async (req, res) => {
   try {
     const restaurant = await Restaurant.findOne({ owner: req.user.id });
     if (!restaurant) return res.status(404).json({ success: false, message: "No restaurant profile was found for this account" });
-    const reservations = await Reservation.find({ restaurant: restaurant._id }).populate("user", "name email phone").sort({ createdAt: -1 });
+    const reservations = await Reservation.find({
+      restaurant: restaurant._id,
+      $or: [{ paymentStatus: "paid" }, { paymentStatus: { $exists: false } }],
+    }).populate("user", "name email phone").sort({ createdAt: -1 });
     const confirmed = reservations.filter((reservation) => reservation.status === "confirmed");
     const pending = reservations.filter((reservation) => reservation.status === "pending");
     res.json({ success: true, restaurant, reservations, metrics: { totalBookings: reservations.length, pendingRequests: pending.length, confirmedBookings: confirmed.length, estimatedRevenue: confirmed.reduce((total, reservation) => total + reservation.bookingFee, 0) } });

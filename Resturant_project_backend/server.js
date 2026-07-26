@@ -9,6 +9,8 @@ import reservationRoutes from "./src/routes/reservationRoutes.js";
 import restaurantRoutes from "./src/routes/restaurantRoutes.js";
 import reviewRoutes from "./src/routes/reviewRoutes.js";
 import adminRoutes from "./src/routes/adminRoutes.js";
+import paymentRoutes from "./src/routes/paymentRoutes.js";
+import { handleRazorpayWebhook } from "./src/controllers/paymentController.js";
 
 
 // Load Environment Variables
@@ -25,6 +27,7 @@ const app = express();
 
 // Middlewares
 app.use(cors({ origin: process.env.CLIENT_URL || "http://localhost:5173" }));
+app.post("/api/payments/webhook", express.raw({ type: "application/json" }), handleRazorpayWebhook);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
@@ -40,6 +43,7 @@ app.use(
 app.use("/api/restaurants", restaurantRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/payments", paymentRoutes);
 
 
 
