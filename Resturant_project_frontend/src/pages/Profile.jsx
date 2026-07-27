@@ -7,6 +7,14 @@ export default function Profile() {
   const user = useMemo(() => JSON.parse(localStorage.getItem("user") || "null"), []);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(user?.role === "customer");
+  const [passwordForm, setPasswordForm] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
+  const [passwordMessage, setPasswordMessage] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [changingPassword, setChangingPassword] = useState(false);
 
   useEffect(() => {
     if (!user || !localStorage.getItem("token")) { navigate("/login"); return; }
@@ -24,6 +32,43 @@ export default function Profile() {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     navigate("/login");
+  };
+
+  const handlePasswordChange = async (event) => {
+    event.preventDefault();
+    setPasswordError("");
+    setPasswordMessage("");
+
+    if (passwordForm.newPassword.length < 12) {
+      setPasswordError("New password must be at least 12 characters.");
+      return;
+    }
+
+    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+      setPasswordError("New passwords do not match.");
+      return;
+    }
+
+    setChangingPassword(true);
+
+    try {
+      const { data } = await api.patch("/auth/change-password", {
+        currentPassword: passwordForm.currentPassword,
+        newPassword: passwordForm.newPassword,
+      });
+      setPasswordMessage(data.message);
+      setPasswordForm({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
+    } catch (error) {
+      setPasswordError(
+        error.response?.data?.message || "Unable to change password right now.",
+      );
+    } finally {
+      setChangingPassword(false);
+    }
   };
 
   return <main className="page-shell px-4 py-10 sm:py-16">
@@ -60,6 +105,57 @@ export default function Profile() {
               </> : <><h2 className="mt-5 text-2xl font-bold">{user.role === "admin" ? "Review restaurant applications" : "Manage table requests"}</h2><p className="mt-3 leading-7 text-stone-300">{user.role === "admin" ? "Approve trusted restaurants before they appear to customers." : "View booking requests and keep customers updated."}</p></>}
             </article>
           </div>
+          <article className="mt-5 rounded-3xl border border-stone-100 bg-white p-6 sm:p-8">
+            <div className="max-w-2xl">
+              <p className="eyebrow">Account security</p>
+              <h2 className="mt-2 text-2xl font-bold text-stone-900">Change your password</h2>
+              <p className="mt-2 text-sm leading-6 text-stone-500">Use a unique password with at least 12 characters that you do not use on any other website.</p>
+              <form onSubmit={handlePasswordChange} className="mt-6 grid gap-4">
+                <label>
+                  <span className="mb-2 block text-sm font-bold text-stone-700">Current password</span>
+                  <input
+                    type="password"
+                    autoComplete="current-password"
+                    value={passwordForm.currentPassword}
+                    onChange={(event) => setPasswordForm({ ...passwordForm, currentPassword: event.target.value })}
+                    className="w-full rounded-2xl border border-stone-200 px-4 py-3 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
+                    required
+                  />
+                </label>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <label>
+                    <span className="mb-2 block text-sm font-bold text-stone-700">New password</span>
+                    <input
+                      type="password"
+                      autoComplete="new-password"
+                      minLength={12}
+                      value={passwordForm.newPassword}
+                      onChange={(event) => setPasswordForm({ ...passwordForm, newPassword: event.target.value })}
+                      className="w-full rounded-2xl border border-stone-200 px-4 py-3 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
+                      required
+                    />
+                  </label>
+                  <label>
+                    <span className="mb-2 block text-sm font-bold text-stone-700">Confirm new password</span>
+                    <input
+                      type="password"
+                      autoComplete="new-password"
+                      minLength={12}
+                      value={passwordForm.confirmPassword}
+                      onChange={(event) => setPasswordForm({ ...passwordForm, confirmPassword: event.target.value })}
+                      className="w-full rounded-2xl border border-stone-200 px-4 py-3 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
+                      required
+                    />
+                  </label>
+                </div>
+                {passwordError && <p role="alert" className="rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">{passwordError}</p>}
+                {passwordMessage && <p role="status" className="rounded-xl bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700">{passwordMessage}</p>}
+                <button type="submit" disabled={changingPassword} className="btn-primary w-fit disabled:cursor-not-allowed disabled:opacity-60">
+                  {changingPassword ? "Changing password..." : "Change password"}
+                </button>
+              </form>
+            </div>
+          </article>
           <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-stone-100 pt-6"><p className="text-sm text-stone-500">Need help? Contact support from the homepage footer.</p><button onClick={logout} className="font-bold text-red-600 hover:text-red-700">Log out</button></div>
         </div>
       </section>

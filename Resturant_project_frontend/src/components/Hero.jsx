@@ -8,13 +8,13 @@ const Hero = ({ searchRef }) => (
           <span className="h-2 w-2 rounded-full bg-emerald-400" /> Trusted tables, memorable meals
         </div>
         <h1 className="display-title text-5xl font-bold sm:text-6xl lg:text-8xl">Your next great meal starts here.</h1>
-        <p className="mt-7 max-w-2xl text-lg leading-8 text-stone-200 sm:text-xl">Explore verified restaurants, choose your time, and send a table request in minutes.</p>
+        <p className="mt-7 max-w-2xl text-lg leading-8 text-stone-200 sm:text-xl">Explore featured restaurants, choose your time, and send a table request in minutes.</p>
         <div className="mt-9 flex flex-wrap gap-3">
           <button onClick={() => searchRef.current?.scrollIntoView({ behavior: "smooth" })} className="btn-primary px-7 py-4">Find a table <span aria-hidden="true">→</span></button>
           <a href="#how-it-works" className="inline-flex items-center rounded-2xl border border-white/30 bg-white/10 px-7 py-4 font-bold backdrop-blur transition hover:bg-white/20">How it works</a>
         </div>
         <div className="mt-12 flex flex-wrap gap-x-9 gap-y-4 text-sm text-stone-300">
-          <span><strong className="block text-xl text-white">Verified</strong> restaurant partners</span>
+          <span><strong className="block text-xl text-white">Featured</strong> restaurant choices</span>
           <span><strong className="block text-xl text-white">Simple</strong> booking requests</span>
           <span><strong className="block text-xl text-white">Secure</strong> account access</span>
         </div>
