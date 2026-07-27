@@ -35,15 +35,19 @@ export default function Reservation() {
     setSubmitting(true);
     setNotice({ type: "", text: "" });
     try {
-      const checkoutReady = await loadRazorpay();
-      if (!checkoutReady) throw new Error("Razorpay Checkout could not be loaded. Check your connection and try again.");
-
       const { data } = await api.post("/payments/create-order", {
         restaurantId: restaurant._id,
         date: form.date,
         time: form.time,
         guests: Number(form.guests),
       });
+
+      const checkoutReady = await loadRazorpay();
+      if (!checkoutReady) {
+        setNotice({ type: "info", text: "Your booking request was sent to the restaurant, but Razorpay Checkout could not be loaded. Payment remains unpaid." });
+        window.setTimeout(() => navigate("/bookings"), 2200);
+        return;
+      }
 
       const checkout = new window.Razorpay({
         key: data.keyId,
@@ -58,7 +62,8 @@ export default function Reservation() {
         modal: {
           ondismiss: () => {
             setSubmitting(false);
-            setNotice({ type: "info", text: "Payment was cancelled. No booking request was sent to the restaurant." });
+            setNotice({ type: "info", text: "Payment was cancelled, but your booking request was sent to the restaurant. Payment remains unpaid." });
+            window.setTimeout(() => navigate("/bookings"), 2200);
           },
         },
         handler: async (response) => {
@@ -78,7 +83,8 @@ export default function Reservation() {
       });
       checkout.on("payment.failed", (response) => {
         setSubmitting(false);
-        setNotice({ type: "error", text: response.error?.description || "Payment failed. Please try again." });
+        setNotice({ type: "info", text: `${response.error?.description || "Payment failed."} Your booking request was still sent to the restaurant.` });
+        window.setTimeout(() => navigate("/bookings"), 2200);
       });
       checkout.open();
     } catch (error) {
@@ -94,7 +100,7 @@ export default function Reservation() {
         <div className="relative min-h-[340px] lg:min-h-[680px]"><img src={restaurant.image} alt={restaurant.name} className="absolute inset-0 h-full w-full object-cover" /><div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-transparent to-transparent" /><div className="absolute inset-x-0 bottom-0 p-7 text-white sm:p-10"><span className="rounded-full bg-white/15 px-3 py-1.5 text-sm font-bold backdrop-blur">★ {restaurant.rating || "New"}</span><h1 className="display-title mt-4 text-4xl font-bold sm:text-5xl">{restaurant.name}</h1><p className="mt-3 text-stone-200">{restaurant.cuisine} · {restaurant.area}, {restaurant.city}</p></div></div>
 
         <div className="p-6 sm:p-10 lg:p-12">
-          <p className="eyebrow">Secure checkout</p><h2 className="display-title mt-2 text-4xl font-bold">Complete your reservation</h2><p className="mt-3 text-stone-500">Your booking request is sent only after secure payment verification.</p>
+          <p className="eyebrow">Secure checkout</p><h2 className="display-title mt-2 text-4xl font-bold">Complete your reservation</h2><p className="mt-3 text-stone-500">Clicking Proceed to Pay sends your booking request to the restaurant. Payment and restaurant confirmation are tracked separately.</p>
           <div className="mt-6 inline-flex rounded-full bg-blue-50 px-3 py-1.5 text-xs font-extrabold text-blue-700">RAZORPAY TEST MODE · NO REAL MONEY</div>
 
           <form onSubmit={startPayment} className="mt-8 space-y-5">
@@ -107,7 +113,7 @@ export default function Reservation() {
             <div className="rounded-3xl bg-stone-900 p-6 text-white"><div className="flex justify-between text-sm text-stone-400"><span>₹{PRICE_PER_GUEST} × {form.guests} guests</span><span>₹{totalAmount}</span></div><div className="mt-4 flex justify-between border-t border-white/10 pt-4 text-xl font-bold"><span>Total payable</span><span className="text-orange-400">₹{totalAmount}</span></div></div>
 
             {notice.text && <div className={`rounded-2xl p-4 text-sm font-semibold ${notice.type === "success" ? "bg-emerald-50 text-emerald-800" : notice.type === "error" ? "bg-red-50 text-red-700" : "bg-blue-50 text-blue-700"}`}>{notice.text}</div>}
-            <button disabled={submitting} className="btn-primary w-full py-4 disabled:cursor-wait disabled:bg-stone-400 disabled:shadow-none">{submitting ? "Preparing secure payment…" : `Pay ₹${totalAmount} with Razorpay`}</button>
+            <button disabled={submitting} className="btn-primary w-full py-4 disabled:cursor-wait disabled:bg-stone-400 disabled:shadow-none">{submitting ? "Sending booking request…" : `Proceed to Pay ₹${totalAmount}`}</button>
             <p className="text-center text-xs leading-5 text-stone-400">Payment is processed by Razorpay. TableReserve never receives or stores your card or UPI credentials.</p>
           </form>
         </div>

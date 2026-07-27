@@ -26,7 +26,6 @@ export const getOwnerDashboard = async (req, res) => {
     if (!restaurant) return res.status(404).json({ success: false, message: "No restaurant profile was found for this account" });
     const reservations = await Reservation.find({
       restaurant: restaurant._id,
-      $or: [{ paymentStatus: "paid" }, { paymentStatus: { $exists: false } }],
     }).populate("user", "name email phone").sort({ createdAt: -1 });
     const confirmed = reservations.filter((reservation) => reservation.status === "confirmed");
     const pending = reservations.filter((reservation) => reservation.status === "pending");
