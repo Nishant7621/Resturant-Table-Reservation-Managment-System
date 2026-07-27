@@ -6,7 +6,7 @@ import Restaurant from "../models/Restaurant.js";
 // ================= Register User =================
 export const registerUser = async (req, res) => {
   try {
-    const { name, email, password, role = "customer", phone, restaurantName, ownerName, gstNumber, fssaiNumber, city, area, image } = req.body;
+    const { name, email, password, role = "customer", phone, restaurantName, ownerName, fssaiNumber, city, area, image } = req.body;
 
     if (!name || !email || !password) {
       return res.status(400).json({ success: false, message: "Name, email, and password are required" });
@@ -17,7 +17,7 @@ export const registerUser = async (req, res) => {
     if (!["customer", "restaurant"].includes(role)) {
       return res.status(400).json({ success: false, message: "Invalid account type" });
     }
-    if (role === "restaurant" && (!restaurantName || !ownerName || !gstNumber || !fssaiNumber || !city || !area || !phone || !image)) {
+    if (role === "restaurant" && (!restaurantName || !ownerName || !city || !area || !phone || !image)) {
       return res.status(400).json({ success: false, message: "All restaurant registration fields are required" });
     }
 
@@ -50,8 +50,7 @@ export const registerUser = async (req, res) => {
         ownerName,
         email: user.email,
         phone,
-        gstNumber,
-        fssaiNumber,
+        fssaiNumber: fssaiNumber || undefined,
         city,
         area,
         image,
