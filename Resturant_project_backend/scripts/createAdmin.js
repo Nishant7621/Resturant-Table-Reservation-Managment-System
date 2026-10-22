@@ -6,12 +6,13 @@ import User from "../src/models/User.js";
 dotenv.config();
 
 try {
-  const { MONGO_URI, ADMIN_NAME, ADMIN_EMAIL, ADMIN_PASSWORD } = process.env;
-  if (!MONGO_URI || !ADMIN_EMAIL || !ADMIN_PASSWORD) {
-    throw new Error("MONGO_URI, ADMIN_EMAIL, and ADMIN_PASSWORD must be set in .env");
+  const uri = process.argv[2] || process.env.MONGO_URI;
+  const { ADMIN_NAME, ADMIN_EMAIL, ADMIN_PASSWORD } = process.env;
+  if (!uri || !ADMIN_EMAIL || !ADMIN_PASSWORD) {
+    throw new Error("MONGO_URI, ADMIN_EMAIL, and ADMIN_PASSWORD must be set in .env or passed as argument");
   }
   if (ADMIN_PASSWORD.length < 8) throw new Error("ADMIN_PASSWORD must be at least 8 characters");
-  await mongoose.connect(MONGO_URI);
+  await mongoose.connect(uri, { serverSelectionTimeoutMS: 10000 });
   const email = ADMIN_EMAIL.toLowerCase().trim();
   const existing = await User.findOne({ email });
   const password = await bcrypt.hash(ADMIN_PASSWORD, 10);

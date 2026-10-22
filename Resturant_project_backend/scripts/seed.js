@@ -13,14 +13,17 @@ const restaurants = [
   { name: "Taco House", city: "Pune", area: "Koregaon Park", cuisine: "Mexican", rating: 4.5, price: "₹₹", image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80", tables: 10 },
 ];
 
+const uri = process.argv[2] || process.env.MONGO_URI;
+
 try {
-  if (!process.env.MONGO_URI) throw new Error("MONGO_URI is missing. Create .env from .env.example first.");
-  await mongoose.connect(process.env.MONGO_URI);
+  if (!uri) throw new Error("MONGO_URI is missing. Provide it as an argument or in .env (e.g. node scripts/seed.js <MONGO_URI>)");
+  console.log("Connecting to database...");
+  await mongoose.connect(uri, { serverSelectionTimeoutMS: 10000 });
   const count = await Restaurant.countDocuments();
   if (count === 0) {
     await Restaurant.insertMany(restaurants.map((restaurant) => ({ ...restaurant, approvalStatus: "approved" })));
-    console.log("Seeded restaurants.");
+    console.log("✅ Seeded restaurants successfully.");
   }
-  else console.log("Restaurants already exist; no data was changed.");
-} catch (error) { console.error(error.message); process.exitCode = 1; }
+  else console.log(`✅ ${count} restaurants already exist in the database.`);
+} catch (error) { console.error("❌ Seeding error:", error.message); process.exitCode = 1; }
 finally { await mongoose.disconnect(); }

@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import morgan from "morgan";
+import mongoose from "mongoose";
 import connectDB from "./src/config/db.js";
 
 import authRoutes from "./src/routes/authRoutes.js";
@@ -49,12 +50,21 @@ app.use("/api/payments", paymentRoutes);
 
 // Default Route
 app.get("/", (req, res) => {
-
   res.status(200).json({
     success: true,
     message: "Restaurant Reservation Management System Backend Running 🚀",
   });
+});
 
+// Health check endpoint
+app.get("/api/health", (req, res) => {
+  const isDbConnected = mongoose.connection.readyState === 1;
+  res.status(isDbConnected ? 200 : 503).json({
+    status: isDbConnected ? "ok" : "database_disconnected",
+    server: "running",
+    database: isDbConnected ? "connected" : "disconnected",
+    dbHost: mongoose.connection.host || null,
+  });
 });
 
 
