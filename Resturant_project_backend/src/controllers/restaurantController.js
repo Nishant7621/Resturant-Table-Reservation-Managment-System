@@ -1,19 +1,41 @@
+import mongoose from "mongoose";
 import Restaurant from "../models/Restaurant.js";
 import Reservation from "../models/Reservation.js";
+import supabaseService from "../services/supabaseService.js";
+
+const shouldUseSupabase = () => process.env.USE_SUPABASE === "true" || mongoose.connection.readyState !== 1;
 
 export const getRestaurants = async (req, res) => {
   try {
+    if (shouldUseSupabase()) {
+      try {
+        const restaurants = await supabaseService.getRestaurants(req.query);
+        return res.json({ success: true, count: restaurants.length, restaurants });
+      } catch (supabaseError) {
+        console.warn("Supabase fetch failed, trying MongoDB fallback:", supabaseError.message);
+      }
+    }
+
     const query = { approvalStatus: "approved" };
     if (req.query.city) query.city = new RegExp(`^${req.query.city}$`, "i");
     if (req.query.area) query.area = new RegExp(`^${req.query.area}$`, "i");
     if (req.query.guests) query.tables = { $gte: Math.ceil(Number(req.query.guests) / 4) };
     const restaurants = await Restaurant.find(query).sort({ rating: -1, name: 1 });
-    res.json({ success: true, restaurants });
+    res.json({ success: true, count: restaurants.length, restaurants });
   } catch (error) { res.status(500).json({ success: false, message: error.message }); }
 };
 
 export const getRestaurantById = async (req, res) => {
   try {
+    if (shouldUseSupabase()) {
+      try {
+        const restaurant = await supabaseService.getRestaurantById(req.params.id);
+        if (restaurant) return res.json({ success: true, restaurant });
+      } catch (supabaseError) {
+        console.warn("Supabase fetch by ID failed:", supabaseError.message);
+      }
+    }
+
     const restaurant = await Restaurant.findOne({ _id: req.params.id, approvalStatus: "approved" });
     if (!restaurant) return res.status(404).json({ success: false, message: "Restaurant not found" });
     res.json({ success: true, restaurant });
@@ -22,6 +44,15 @@ export const getRestaurantById = async (req, res) => {
 
 export const getOwnerDashboard = async (req, res) => {
   try {
+    if (shouldUseSupabase()) {
+      try {
+        const dashboard = await supabaseService.getOwnerDashboard(req.user.id);
+        if (dashboard) return res.json({ success: true, ...dashboard });
+      } catch (supabaseError) {
+        console.warn("Supabase owner dashboard failed:", supabaseError.message);
+      }
+    }
+
     const restaurant = await Restaurant.findOne({ owner: req.user.id });
     if (!restaurant) return res.status(404).json({ success: false, message: "No restaurant profile was found for this account" });
     const reservations = await Reservation.find({
@@ -37,6 +68,16 @@ export const updateReservationStatus = async (req, res) => {
   try {
     const { status } = req.body;
     if (!["confirmed", "declined"].includes(status)) return res.status(400).json({ success: false, message: "Invalid reservation status" });
+
+    if (shouldUseSupabase()) {
+      try {
+        const reservation = await supabaseService.updateReservationStatus(req.params.reservationId, status);
+        if (reservation) return res.json({ success: true, message: `Booking ${status}`, reservation });
+      } catch (supabaseError) {
+        console.warn("Supabase reservation update failed:", supabaseError.message);
+      }
+    }
+
     const restaurant = await Restaurant.findOne({ owner: req.user.id });
     if (!restaurant) return res.status(404).json({ success: false, message: "Restaurant profile not found" });
     const reservation = await Reservation.findOneAndUpdate({ _id: req.params.reservationId, restaurant: restaurant._id }, { status }, { new: true }).populate("user", "name email phone");
@@ -44,3 +85,4 @@ export const updateReservationStatus = async (req, res) => {
     res.json({ success: true, message: `Booking ${status}`, reservation });
   } catch (error) { res.status(500).json({ success: false, message: error.message }); }
 };
+

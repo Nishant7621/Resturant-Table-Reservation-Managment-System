@@ -1,7 +1,11 @@
+import mongoose from "mongoose";
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import Restaurant from "../models/Restaurant.js";
+import supabaseService from "../services/supabaseService.js";
+
+const shouldUseSupabase = () => process.env.USE_SUPABASE === "true" || mongoose.connection.readyState !== 1;
 
 // ================= Register User =================
 export const registerUser = async (req, res) => {
@@ -19,6 +23,25 @@ export const registerUser = async (req, res) => {
     }
     if (role === "restaurant" && (!restaurantName || !ownerName || !city || !area || !phone || !image)) {
       return res.status(400).json({ success: false, message: "All restaurant registration fields are required" });
+    }
+
+    if (shouldUseSupabase()) {
+      try {
+        const existing = await supabaseService.findUserByEmail(email);
+        if (existing) {
+          return res.status(400).json({ success: false, message: "User already exists" });
+        }
+        const user = await supabaseService.createUser({ name, email, password, phone, role });
+        return res.status(201).json({
+          success: true,
+          message: role === "restaurant"
+            ? "Registration submitted. Your restaurant will remain hidden until an admin approves it"
+            : "User registered successfully",
+          user: { id: user._id, name: user.name, email: user.email, role: user.role },
+        });
+      } catch (err) {
+        console.warn("Supabase register error, falling back to MongoDB:", err.message);
+      }
     }
 
     // Check if user already exists
@@ -92,8 +115,20 @@ export const loginUser = async (req, res) => {
       });
     }
 
-    // Find user
-    const user = await User.findOne({ email: email.toLowerCase().trim() });
+    let user = null;
+
+    if (shouldUseSupabase()) {
+      try {
+        user = await supabaseService.findUserByEmail(email);
+      } catch (err) {
+        console.warn("Supabase findUserByEmail error:", err.message);
+      }
+    }
+
+    if (!user) {
+      // Find user
+      user = await User.findOne({ email: email.toLowerCase().trim() });
+    }
 
     if (!user) {
       return res.status(404).json({
@@ -122,7 +157,7 @@ export const loginUser = async (req, res) => {
     // Generate JWT Token
     const token = jwt.sign(
       {
-        id: user._id,
+        id: user._id || user.id,
         role: user.role,
       },
       process.env.JWT_SECRET,
@@ -137,7 +172,7 @@ export const loginUser = async (req, res) => {
       message: "Login successful",
       token,
       user: {
-        id: user._id,
+        id: user._id || user.id,
         name: user.name,
         email: user.email,
         role: user.role,

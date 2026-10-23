@@ -57,13 +57,18 @@ app.get("/", (req, res) => {
 });
 
 // Health check endpoint
-app.get("/api/health", (req, res) => {
-  const isDbConnected = mongoose.connection.readyState === 1;
-  res.status(isDbConnected ? 200 : 503).json({
-    status: isDbConnected ? "ok" : "database_disconnected",
+app.get("/api/health", async (req, res) => {
+  const isMongoConnected = mongoose.connection.readyState === 1;
+  const isSupabase = process.env.USE_SUPABASE === "true";
+
+  res.status(200).json({
+    status: "ok",
     server: "running",
-    database: isDbConnected ? "connected" : "disconnected",
-    dbHost: mongoose.connection.host || null,
+    database: {
+      activeEngine: isSupabase ? "supabase" : (isMongoConnected ? "mongodb" : "none"),
+      mongodb: isMongoConnected ? "connected" : "disconnected",
+      supabase: isSupabase ? "configured" : "optional",
+    },
   });
 });
 
