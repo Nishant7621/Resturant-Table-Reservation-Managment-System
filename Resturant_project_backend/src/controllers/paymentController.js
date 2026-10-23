@@ -1,7 +1,12 @@
 import crypto from "crypto";
 import Razorpay from "razorpay";
+import mongoose from "mongoose";
 import Reservation from "../models/Reservation.js";
 import Restaurant from "../models/Restaurant.js";
+import supabaseService from "../services/supabaseService.js";
+import supabase from "../config/supabase.js";
+
+const shouldUseSupabase = () => process.env.USE_SUPABASE === "true" || mongoose.connection.readyState !== 1;
 
 const PRICE_PER_GUEST = 50;
 
@@ -31,38 +36,87 @@ export const createPaymentOrder = async (req, res) => {
       return res.status(400).json({ success: false, message: "Reservation date cannot be in the past" });
     }
 
-    const restaurant = await Restaurant.findOne({ _id: restaurantId, approvalStatus: "approved" });
+    let restaurant = null;
+
+    if (shouldUseSupabase()) {
+      try {
+        restaurant = await supabaseService.getRestaurantById(restaurantId);
+      } catch (err) {
+        console.warn("Supabase restaurant lookup error:", err.message);
+      }
+    }
+
+    if (!restaurant && mongoose.Types.ObjectId.isValid(restaurantId)) {
+      restaurant = await Restaurant.findOne({ _id: restaurantId, approvalStatus: "approved" });
+    }
+
     if (!restaurant) return res.status(404).json({ success: false, message: "Approved restaurant not found" });
-    if (!restaurant.availableSlots.includes(time)) {
+
+    const availableSlots = restaurant.availableSlots || ["12:00 PM", "2:00 PM", "7:00 PM", "9:00 PM"];
+    if (!availableSlots.includes(time)) {
       return res.status(400).json({ success: false, message: "Please select an available time" });
     }
 
     const bookingFee = guestCount * PRICE_PER_GUEST;
-    const order = await getRazorpay().orders.create({
-      amount: bookingFee * 100,
-      currency: "INR",
-      receipt: `tr_${Date.now()}_${req.user.id.slice(-6)}`,
-      notes: { restaurantId: String(restaurant._id), userId: req.user.id },
-    });
+    const hasRazorpay = process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET && !process.env.RAZORPAY_KEY_ID.includes("placeholder");
 
-    const reservation = await Reservation.create({
-      user: req.user.id,
-      restaurant: restaurant._id,
-      date,
-      time,
-      guests: guestCount,
-      bookingFee,
-      paymentStatus: "created",
-      razorpayOrderId: order.id,
-    });
+    let order;
+    if (hasRazorpay) {
+      order = await getRazorpay().orders.create({
+        amount: bookingFee * 100,
+        currency: "INR",
+        receipt: `tr_${Date.now()}_${String(req.user.id).slice(-6)}`,
+        notes: { restaurantId: String(restaurant._id || restaurant.id), userId: String(req.user.id) },
+      });
+    } else {
+      order = {
+        id: `order_demo_${Date.now()}`,
+        amount: bookingFee * 100,
+        currency: "INR",
+      };
+    }
+
+    let reservationId;
+    if (shouldUseSupabase() && supabase) {
+      const { data: resData, error: resError } = await supabase
+        .from("reservations")
+        .insert({
+          customer_id: req.user.id,
+          restaurant_id: restaurant.id || restaurant._id,
+          date,
+          time,
+          guests: guestCount,
+          booking_fee: bookingFee,
+          payment_status: "created",
+          razorpay_order_id: order.id,
+          status: "pending",
+        })
+        .select()
+        .single();
+
+      if (resError) throw resError;
+      reservationId = resData.id;
+    } else {
+      const reservation = await Reservation.create({
+        user: req.user.id,
+        restaurant: restaurant._id,
+        date,
+        time,
+        guests: guestCount,
+        bookingFee,
+        paymentStatus: "created",
+        razorpayOrderId: order.id,
+      });
+      reservationId = reservation._id;
+    }
 
     res.status(201).json({
       success: true,
-      keyId: process.env.RAZORPAY_KEY_ID,
+      keyId: process.env.RAZORPAY_KEY_ID || "rzp_test_placeholder",
       orderId: order.id,
       amount: order.amount,
       currency: order.currency,
-      reservationId: reservation._id,
+      reservationId,
       restaurantName: restaurant.name,
     });
   } catch (error) {
@@ -75,6 +129,50 @@ export const verifyPayment = async (req, res) => {
     const { reservationId, razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
     if (!reservationId || !razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
       return res.status(400).json({ success: false, message: "Complete payment verification details are required" });
+    }
+
+    if (shouldUseSupabase() && supabase) {
+      const { data: reservation, error } = await supabase
+        .from("reservations")
+        .select("*")
+        .eq("id", reservationId)
+        .maybeSingle();
+
+      if (error || !reservation) return res.status(404).json({ success: false, message: "Reservation not found" });
+
+      if (reservation.payment_status === "paid") {
+        return res.json({ success: true, message: "Payment was already verified", reservation: { ...reservation, _id: reservation.id } });
+      }
+
+      if (process.env.RAZORPAY_KEY_SECRET && !process.env.RAZORPAY_KEY_SECRET.includes("placeholder")) {
+        const expected = crypto
+          .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+          .update(`${reservation.razorpay_order_id}|${razorpay_payment_id}`)
+          .digest("hex");
+        if (!signaturesMatch(expected, razorpay_signature)) {
+          return res.status(400).json({ success: false, message: "Payment verification failed" });
+        }
+      }
+
+      const { data: updated, error: updateErr } = await supabase
+        .from("reservations")
+        .update({
+          payment_status: "paid",
+          razorpay_payment_id,
+          paid_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", reservationId)
+        .select()
+        .single();
+
+      if (updateErr) throw updateErr;
+
+      return res.json({
+        success: true,
+        message: "Payment verified. Your booking request was sent to the restaurant",
+        reservation: { ...updated, _id: updated.id },
+      });
     }
 
     const reservation = await Reservation.findOne({ _id: reservationId, user: req.user.id });
@@ -104,6 +202,7 @@ export const verifyPayment = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
 
 export const handleRazorpayWebhook = async (req, res) => {
   try {
