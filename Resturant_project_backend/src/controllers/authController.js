@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import Restaurant from "../models/Restaurant.js";
 import supabaseService from "../services/supabaseService.js";
+import sendToGoogleSheet from "../services/googleSheetService.js";
 
 const shouldUseSupabase = () => process.env.USE_SUPABASE === "true" || mongoose.connection.readyState !== 1;
 
@@ -41,6 +42,14 @@ export const registerUser = async (req, res) => {
             console.warn("MongoDB sync notice:", mErr.message);
           }
         }
+
+        sendToGoogleSheet({
+          type: "customers",
+          name,
+          email,
+          phone,
+          role,
+        });
 
         return res.status(201).json({
           success: true,

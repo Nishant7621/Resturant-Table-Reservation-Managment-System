@@ -5,6 +5,7 @@ import Reservation from "../models/Reservation.js";
 import Restaurant from "../models/Restaurant.js";
 import supabaseService from "../services/supabaseService.js";
 import supabase from "../config/supabase.js";
+import sendToGoogleSheet from "../services/googleSheetService.js";
 
 const shouldUseSupabase = () => process.env.USE_SUPABASE === "true" || mongoose.connection.readyState !== 1;
 
@@ -127,6 +128,20 @@ export const createPaymentOrder = async (req, res) => {
       });
       reservationId = reservation._id;
     }
+
+    // Auto-sync to Google Sheet if configured
+    sendToGoogleSheet({
+      type: "reservations",
+      customerName: req.user.name || "Customer",
+      customerEmail: req.user.email || "",
+      customerPhone: req.user.phone || "",
+      restaurantName: restaurant.name,
+      date,
+      time,
+      guests: guestCount,
+      bookingFee,
+      status: "pending",
+    });
 
     res.status(201).json({
       success: true,
