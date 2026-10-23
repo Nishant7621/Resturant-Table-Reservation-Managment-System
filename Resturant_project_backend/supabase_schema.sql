@@ -91,15 +91,15 @@ CREATE POLICY "service_role_all_reviews" ON reviews FOR ALL TO service_role USIN
 DROP POLICY IF EXISTS "public_read_approved_restaurants" ON restaurant_details;
 CREATE POLICY "public_read_approved_restaurants" ON restaurant_details FOR SELECT TO anon, authenticated USING (approval_status = 'approved');
 
--- 7. Seed Initial Restaurant Details
+-- 7. Seed Initial Restaurant Details (100% Pure Veg & Distinct Photos)
 INSERT INTO restaurant_details (name, city, area, cuisine, rating, price, image, tables, approval_status)
 VALUES
-('Manohar Dairy & Restaurant', 'Bhopal', 'New Market', 'North Indian', 4.5, '₹₹', 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80', 18, 'approved'),
-('Taste of Bhopal', 'Bhopal', 'MP Nagar', 'Indian', 4.7, '₹₹', 'https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=800&q=80', 15, 'approved'),
-('Sarafa Food Palace', 'Indore', 'Palasia', 'Street Food', 4.8, '₹', 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80', 12, 'approved'),
-('Vijay Nagar Cafe', 'Indore', 'Vijay Nagar', 'Cafe', 4.7, '₹₹', 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80', 14, 'approved'),
-('Barbeque Nation Nagpur', 'Nagpur', 'Dharampeth', 'BBQ', 4.7, '₹₹₹', 'https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&w=800&q=80', 20, 'approved'),
-('Taco House', 'Pune', 'Koregaon Park', 'Mexican', 4.5, '₹₹', 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80', 10, 'approved')
+('Manohar Dairy & Restaurant', 'Bhopal', 'New Market', 'North Indian (Pure Veg)', 4.5, '₹₹', 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=800&q=80', 18, 'approved'),
+('Taste of Bhopal', 'Bhopal', 'MP Nagar', 'South & North Indian (Pure Veg)', 4.7, '₹₹', 'https://images.unsplash.com/photo-1610057099431-d73a1c9d2f2f?auto=format&fit=crop&w=800&q=80', 15, 'approved'),
+('Sarafa Food Palace', 'Indore', 'Palasia', 'Indori Street Food (Pure Veg)', 4.8, '₹', 'https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=800&q=80', 12, 'approved'),
+('Vijay Nagar Cafe', 'Indore', 'Vijay Nagar', 'Cafe & Bakery', 4.7, '₹₹', 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80', 14, 'approved'),
+('The Veg Grill Barbeque', 'Nagpur', 'Dharampeth', 'Tandoori & Veg Barbecue', 4.7, '₹₹₹', 'https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?auto=format&fit=crop&w=800&q=80', 20, 'approved'),
+('Taco House (Pure Veg)', 'Pune', 'Koregaon Park', 'Mexican (Pure Veg)', 4.5, '₹₹', 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=800&q=80', 10, 'approved')
 ON CONFLICT DO NOTHING;
 
 -- 8. Seed Default Admin Account (password is: AdminPassword@123)

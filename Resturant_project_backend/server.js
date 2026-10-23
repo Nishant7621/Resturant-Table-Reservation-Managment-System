@@ -56,19 +56,20 @@ app.get("/", (req, res) => {
   });
 });
 
-// Health check endpoint
+// Health check endpoint - Dual Database Status (MongoDB Atlas + Supabase)
 app.get("/api/health", async (req, res) => {
   const isMongoConnected = mongoose.connection.readyState === 1;
-  const isSupabase = process.env.USE_SUPABASE === "true";
+  const isSupabase = Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_KEY);
 
   res.status(200).json({
     status: "ok",
     server: "running",
-    database: {
-      activeEngine: isSupabase ? "supabase" : (isMongoConnected ? "mongodb" : "none"),
-      mongodb: isMongoConnected ? "connected" : "disconnected",
-      supabase: isSupabase ? "configured" : "optional",
+    connections: {
+      mongodbAtlas: isMongoConnected ? "connected" : "connecting/standby",
+      mongoHost: mongoose.connection.host || null,
+      supabase: isSupabase ? "connected" : "unconfigured",
     },
+    mode: "dual-database (MongoDB Atlas + Supabase)",
   });
 });
 

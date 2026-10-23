@@ -96,6 +96,24 @@ export const createPaymentOrder = async (req, res) => {
 
       if (resError) throw resError;
       reservationId = resData.id;
+
+      // Dual-sync to MongoDB Atlas if connected
+      if (mongoose.connection.readyState === 1) {
+        try {
+          await Reservation.create({
+            user: mongoose.Types.ObjectId.isValid(req.user.id) ? req.user.id : new mongoose.Types.ObjectId(),
+            restaurant: mongoose.Types.ObjectId.isValid(restaurant.id) ? restaurant.id : new mongoose.Types.ObjectId(),
+            date,
+            time,
+            guests: guestCount,
+            bookingFee,
+            paymentStatus: "created",
+            razorpayOrderId: order.id,
+          });
+        } catch (mErr) {
+          console.warn("MongoDB sync notice:", mErr.message);
+        }
+      }
     } else {
       const reservation = await Reservation.create({
         user: req.user.id,

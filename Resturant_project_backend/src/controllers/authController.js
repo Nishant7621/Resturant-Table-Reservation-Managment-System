@@ -32,6 +32,16 @@ export const registerUser = async (req, res) => {
           return res.status(400).json({ success: false, message: "User already exists" });
         }
         const user = await supabaseService.createUser({ name, email, password, phone, role });
+
+        // Dual-write to MongoDB if connected
+        if (mongoose.connection.readyState === 1) {
+          try {
+            await User.create({ name, email, password: user.password, role, phone });
+          } catch (mErr) {
+            console.warn("MongoDB sync notice:", mErr.message);
+          }
+        }
+
         return res.status(201).json({
           success: true,
           message: role === "restaurant"
