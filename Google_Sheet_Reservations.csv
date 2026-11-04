@@ -1,0 +1,2 @@
+id,customer_id,restaurant_id,date,time,guests,booking_fee,status,payment_status,razorpay_order_id,razorpay_payment_id,paid_at,created_at,updated_at
+"37c4d60e-1cdc-4ef5-a30e-6ec76ce45f81","39837c2a-1a7c-4a17-9377-b8d431812dd5","5d8a86d6-34db-4337-b120-73daccdee972","2026-10-24","2:00 PM","4","200","pending","created","order_TrFe9VWQ05Pv3F","","","2026-10-23T06:30:41.097294+00:00","2026-10-23T06:30:41.097294+00:00"
